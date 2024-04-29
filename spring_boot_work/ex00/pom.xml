@@ -28,6 +28,7 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!--jsp, jstl을 위한 라이브러리 시작-->
 		<!-- 1) 강사님이 주신거 -->
 		<dependency>
 		    <groupId>jakarta.servlet</groupId>
@@ -48,6 +49,8 @@
 		   <groupId>org.apache.tomcat.embed</groupId>
 		   <artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>		
+		<!--jsp, jstl을 위한 라이브러리 끝-->
+
 	</dependencies>
 
 	<build>
