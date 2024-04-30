@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<item key="org.eclipse.jdt.ui.last.selected.jre.kind2" value="2"/>
+	<item key="org.eclipse.jdt.ui.last.selected.execution.enviroment" value="JavaSE-17"/>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
 		<item key="group_libraries" value="true"/>
 		<item key="layout" value="2"/>
@@ -68,8 +70,8 @@
 		<item key="RemoveFinal" value="false"/>
 	</section>
 	<section name="DialogBounds_GetterSetterTreeSelectionDialog">
-		<item key="DIALOG_X_ORIGIN" value="346"/>
-		<item key="DIALOG_Y_ORIGIN" value="59"/>
+		<item key="DIALOG_X_ORIGIN" value="125"/>
+		<item key="DIALOG_Y_ORIGIN" value="108"/>
 		<item key="DIALOG_WIDTH" value="540"/>
 		<item key="DIALOG_HEIGHT" value="696"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
@@ -109,6 +111,13 @@
 		<item key="DIALOG_Y_ORIGIN" value="161"/>
 		<item key="DIALOG_WIDTH" value="580"/>
 		<item key="DIALOG_HEIGHT" value="543"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+	</section>
+	<section name="JavaProjectWizard.dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="155"/>
+		<item key="DIALOG_Y_ORIGIN" value="132"/>
+		<item key="DIALOG_WIDTH" value="744"/>
+		<item key="DIALOG_HEIGHT" value="799"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
 	</section>
 </section>

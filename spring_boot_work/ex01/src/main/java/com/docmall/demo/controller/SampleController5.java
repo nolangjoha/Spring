@@ -6,8 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
-
 /* 
 1)다른 매핑주소로 이동하는 방법
 2)RedirectAttributes 인터페이스 사용하기

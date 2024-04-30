@@ -38,6 +38,8 @@ public class SampleController2 {
 		// String을 쓰는이유 : return에 redirect를 쓰기 위해서
 		//사용자가 입력한 게시판 데이터를 BoardVO vo받고, 데이터베이스의 게시판테이블에 저장한다. 
 		
+		logger.info("게시판 데이터:" + vo);  // vo.toString()메서드 호출
+		
 		return "redirect:/board/list"; // redirect:가 빠지면 있으면 주소로 이동, 없으면 jsp파일을 말한다.
 		// redirect를 쓸 때 ""를 써야한다.
 	}

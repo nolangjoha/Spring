@@ -60,7 +60,7 @@ public class SampleController {
 	public void doD() {
 		logger.info("called doD....");
 	}
-	
+		
 	/***************************************************************/
 	
 	//주소? localhost:9090/sample/basicGet (get요청방식)
@@ -68,15 +68,15 @@ public class SampleController {
 	public void basicGet() {
 		logger.info("called basicGet....");
 	}
-	/*
+	
 	//주소? localhost:9090/sample/basicPost
 	//위 주소는 주소창에 직접작성하는것이 아니라 태그로 불러와져야 한다.
+	/*
 	@PostMapping("basicPost")
 	public void basicPost(String u_id, String u_pw) {
 		logger.info("called basicPost....");
 		logger.info("아이디는 :" + u_id);
-		logger.info("비밀번호는 :" + u_pw);
-		
+		logger.info("비밀번호는 :" + u_pw);	
 	}
 	*/
 	
