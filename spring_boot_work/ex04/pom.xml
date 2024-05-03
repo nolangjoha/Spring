@@ -52,21 +52,25 @@
 		
 			<!--jsp, jstl을 위한 라이브러리 시작-->
 		<!-- 1) 강사님이 주신거 -->
+		<!--스프링부트 3.x 버전 공통-->
 		<dependency>
 		    <groupId>jakarta.servlet</groupId>
 		    <artifactId>jakarta.servlet-api</artifactId>
 		</dependency>
 		<!-- 2) 강사님이 주신거 -->
+		<!--스프링부트 3.x 버전 공통-->
 		<dependency>
 		    <groupId>org.glassfish.web</groupId>
 		    <artifactId>jakarta.servlet.jsp.jstl</artifactId>
 		</dependency>
 		<!-- 3) 강사님이 주신거 -->
+		<!--스프링부트 3.x 버전 공통-->
 		<dependency>
 		    <groupId>jakarta.servlet.jsp.jstl</groupId>
 		    <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
 		</dependency>
 		<!-- 4) 강사님이 주신거 / jsp를 해석하는 기능 -->		
+		<!--스프링부트 2.x, 3.x 버전 공통-->
 		<dependency>
 		   <groupId>org.apache.tomcat.embed</groupId>
 		   <artifactId>tomcat-embed-jasper</artifactId>

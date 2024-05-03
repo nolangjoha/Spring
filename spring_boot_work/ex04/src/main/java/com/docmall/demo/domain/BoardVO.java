@@ -2,17 +2,19 @@ package com.docmall.demo.domain;
 
 import java.util.Date;
 
+//오라클 테이블의 컬럼을 소문자로 만들었다.
 //bno, title, content, writer, regdate, updatedate, viewcount
 
 public class BoardVO {
 
-	private Long bno;
+	private Long bno;  //참조타입 Long 클래스(랩퍼클래스)
 	private String title;
 	private String content;
 	private String writer;
 	private Date regdate;
 	private Date updatedate;
 	private int viewcount;
+	
 	public Long getBno() {
 		return bno;
 	}

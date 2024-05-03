@@ -15,7 +15,7 @@ import com.docmall.demo.service.EmployeesServiceImpl;
 
 @RequestMapping("/employee/*")
 @Controller
-public class EmployeesController {
+public class EmployeesController { 
 	// 로그객체
 	private static final Logger logger = LoggerFactory.getLogger(EmployeesController.class);
 	
