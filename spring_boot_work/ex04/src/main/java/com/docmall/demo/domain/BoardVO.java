@@ -2,9 +2,16 @@ package com.docmall.demo.domain;
 
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 //오라클 테이블의 컬럼을 소문자로 만들었다.
 //bno, title, content, writer, regdate, updatedate, viewcount
 
+@Getter
+@Setter
+@ToString
 public class BoardVO {
 
 	private Long bno;  //참조타입 Long 클래스(랩퍼클래스)
@@ -15,6 +22,7 @@ public class BoardVO {
 	private Date updatedate;
 	private int viewcount;
 	
+	/*
 	public Long getBno() {
 		return bno;
 	}
@@ -63,7 +71,7 @@ public class BoardVO {
 				+ regdate + ", updatedate=" + updatedate + ", viewcount=" + viewcount + "]";
 	}
 	
-	
+	*/
 	
 	
 }

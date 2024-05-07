@@ -20,6 +20,30 @@
 			bno DESC
 	</select>
 
+
+	<select id="listWithPaging" resultType="com.docmall.demo.domain.BoardVO" parameterType="com.docmall.demo.dto.Criteria">
+		<![CDATA[
+		SELECT  
+			bno, title, content, writer, regdate, updatedate, viewcount
+		FROM (
+	    	SELECT /*+ INDEX_DESC(board PK_BOARD) */
+	        	ROWNUM AS RN, bno, title, content, writer, regdate, updatedate, viewcount
+	    	FROM 
+	        	board  
+	    	WHERE ROWNUM <= (#{pageNum} * #{amount}) 
+	    	)
+		WHERE 
+			RN > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
+
+	<select id="getTotalCount" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			board
+	</select>
+	
 	<update id="readCount" parameterType="Long">
 		UPDATE
 			board

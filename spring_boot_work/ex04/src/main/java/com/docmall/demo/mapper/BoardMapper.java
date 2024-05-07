@@ -3,6 +3,7 @@ package com.docmall.demo.mapper;
 import java.util.List;
 
 import com.docmall.demo.domain.BoardVO;
+import com.docmall.demo.dto.Criteria;
 
 public interface BoardMapper {
 
@@ -11,6 +12,10 @@ public interface BoardMapper {
 	
 	// 글목록
 	List<BoardVO> list();
+	List<BoardVO> listWithPaging(Criteria cri);
+	
+	//총 데이터 개수
+	int getTotalCount();	
 	
 	//게시물 조회
 	BoardVO get(Long bno);

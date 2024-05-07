@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.docmall.demo.domain.BoardVO;
+import com.docmall.demo.dto.Criteria;
 import com.docmall.demo.mapper.BoardMapper;
 
 @Service
@@ -19,7 +20,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void write(BoardVO vo) {
 		boardMapper.write(vo);
-		
 	}
 
 	@Override
@@ -46,6 +46,18 @@ public class BoardServiceImpl implements BoardService {
 	public void delete(Long bno) {
 		// TODO Auto-generated method stub
 		boardMapper.delete(bno);
+	}
+
+	@Override
+	public List<BoardVO> listWithPaging(Criteria cri) {
+		// TODO Auto-generated method stub
+		return boardMapper.listWithPaging(cri);
+	}
+
+	@Override
+	public int getTotalCount() {
+		// TODO Auto-generated method stub
+		return boardMapper.getTotalCount();
 	}
 	
 }

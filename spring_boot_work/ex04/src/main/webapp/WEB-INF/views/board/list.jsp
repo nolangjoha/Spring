@@ -51,14 +51,22 @@
         </table>
         </div>
         
+        <!-- [이전] 1		2	3	4	5	6	7	8	9	10	[다음]-->     
         <div class="card-footer clearfix">
-        <ul class="pagination pagination-sm m-0 float-right">
-        <li class="page-item"><a class="page-link" href="#">«</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">»</a></li>
-        </ul>
+	        <ul class="pagination pagination-sm m-0 float-right">
+	        	<c:if test="${pageMaker.prev}">
+	        		<li class="page-item"><a class="page-link" href="/board/list?pageNum=${pageMaker.startPage-1}&amount=${pageMaker.cri.amount}">[이전]</a></li>
+	        	</c:if>
+	        	
+		        <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="page">
+		        <li class='page-item ${pageMaker.cri.pageNum == page ? "active" : ""}'>
+		        	<a class="page-link" href="/board/list?pageNum=${page }&amount=${pageMaker.cri.amount}">${page }</a></li>
+		        </c:forEach>
+		        
+		        <c:if test="${pageMaker.next}">
+	        		<li class="page-item"><a class="page-link" href="/board/list?pageNum=${pageMaker.endPage+1}&amount=${pageMaker.cri.amount}">[다음]</a></li>
+	        	</c:if>
+	        </ul>
         </div>
         </div>
 

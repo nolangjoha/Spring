@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.docmall.demo.domain.BoardVO;
+import com.docmall.demo.dto.Criteria;
+import com.docmall.demo.dto.PageDTO;
 import com.docmall.demo.service.BoardService;
 
 @RequestMapping("/board/*")
@@ -44,6 +46,7 @@ public class BoardController {
 	}
 	
 	//글목록
+	/*
 	@GetMapping("list")
 	public void list(Model model) {
 		
@@ -53,6 +56,30 @@ public class BoardController {
 		
 		logger.info("리스트");
 	}
+	*/
+	
+	@GetMapping("list")
+	public void list(Criteria cri, Model model) {
+		// 스프링부트는 Criteria클래스의 객체를 알아서 생성해 매개변수로 넣어준다. 
+		//데이터소스(list)를 jsp에서 사용할 경우에는 파라미터를 Model을 사용한다.
+		
+		// list에 10개씩 데이터가 들어와 있다.
+		List<BoardVO> list = boardService.listWithPaging(cri);
+		
+		logger.info("게시물 목록 데이터:" + list);
+		
+		//1)목록으로 뿌릴 데이터 10건 (model 1)
+		model.addAttribute("list", list);  
+		
+		int total = boardService.getTotalCount();
+		PageDTO pageDTO = new PageDTO(cri, total);
+		
+		logger.info("페이징 기능데이터:" + pageDTO);
+		
+		//2) 페이징 기능 1  2  3  ...[next] (model 2)
+		model.addAttribute("pageMaker", pageDTO);
+	}
+	
 	
 	//게시물 조회, 게시물수정
 	@GetMapping(value= {"get","modify"})
