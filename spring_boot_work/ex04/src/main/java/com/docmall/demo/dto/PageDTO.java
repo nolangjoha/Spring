@@ -43,14 +43,14 @@ public class PageDTO {
 		//문제 : 여기까지는 현재는 총데이터 수에 맞는 endPage 값을 구하지 못한 상태
 		
 		//실제 총 데이터 수에 해당하는 블럭의 마지막 페이지
-		int realEnd = (int) (Math.ceil((total*1.0) / cri.getAmount()));
+		int realEnd = (int) (Math.ceil((total*1.0) / cri.getAmount()));  //괄호 잘보기 
 		//cri.getAmount() : 한페이지마다 출력할 건페이지 번호 수
 		/*
 		 예를 들어 total에 33 값이 들어왔을 때  
-		(int) (Math.ceil(33*1.0) / 10) 
-		(int) (Math.ceil(33.0) / 10)
-		(int) (Math.ceil(3.3)
-		(int) (4)
+		(int) (Math.ceil((33*1.0) / 10)) 
+		(int) (Math.ceil((33.0) / 10))
+		(int) (Math.ceil(3.3))
+		(int) (4.0)
 		int 4
 		int realEnd = int 4
 		※int형, int형끼리 나누기를 하면 소수점 이하는 버려진다. 때문에 두값중 하나는 실수형으로 계산을 해야 반올림하는 식을 완성 할 수 있다. 

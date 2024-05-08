@@ -27,6 +27,13 @@
                 <div class="card-header">
                 <h3 class="card-title">게시물 조회</h3>
                 </div>
+                <form id="actionForm" action="/board/list" method="get">
+                    <input type="hidden" name="bno" value="${boardVO.bno }">
+                	<input type="hidden" name="pageNum" value="${cri.pageNum }">
+               		<input type="hidden" name="amount" value="${cri.amount }">
+               		<input type="hidden" name="type" value="${cri.type }">
+               		<input type="hidden" name="keyword" value="${cri.keyword }">
+                </form>
                 <form action="/board/get" method="post">
                 <div class="card-body">
                     <div class="form-group">
@@ -65,7 +72,7 @@
                 <div class="card-footer">
                     <a class="btn btn-primary" href="/board/modify?bno=${boardVO.bno}" role="button">Modify</a>
                     <button type="button" class="btn btn-danger" onclick="fn_delete(${boardVO.bno})">Delete</button>
-                    <a class="btn btn-primary" href="/board/list" role="button">List</a>
+                    <button type="button" class="btn btn-primary" onclick="fn_list(${boardVO.bno})">List</button>
                 </div>
                 </div>
                 </form>
@@ -75,11 +82,24 @@
 </div>
 
 <script>
+
+    let actionForm = document.getElementById("actionForm"); //form태그 참조
+
      function fn_delete(bno){
         if(!confirm(bno + "번 게시물을 삭제하겠습니까?")) return;
      
-        location.href = "/board/delete?bno=" + bno;
+        //location.href = "/board/delete?bno=" + bno;
+
+        //<form id="actionForm" action="/board/list" method="get">
+        actionForm.setAttribute("action", "/board/delete");
+        actionForm.submit();
+    }
+
+     function fn_list(){
+        
+        actionForm.submit();
      }
+
 </script>
 
 </body>
