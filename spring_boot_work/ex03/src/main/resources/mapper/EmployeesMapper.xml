@@ -19,7 +19,7 @@
 		    update_date
 		FROM
 		    employees
-		WEHRE
+		WHERE
 			ROWNUM <= 10
 		]]>
 	</select>

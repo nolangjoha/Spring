@@ -107,26 +107,29 @@ public class BoardController {
 	
 	//게시물 수정하기 
 	@PostMapping("modify")
-	public String modify(BoardVO vo) {
+	public String modify(BoardVO vo, Criteria cri) {
 		log.info("수정데이터: "+ vo);
 		boardService.modify(vo);
 		
-		return "redirect:/board/list";
+		return "redirect:/board/list" + cri.getListLink();
 	}
 	
 	//게시물 삭제하기 //write, modify, insert, update, delete의 데이터 타입은 String// return값 사용을 위해(다른곳으로 이동)
 	@GetMapping("delete")
-	public String delete(Long bno, Criteria cri, RedirectAttributes rttr) {
+	public String delete(Long bno, Criteria cri/*, RedirectAttributes rttr*/) {
 		log.info("삭제 글번호 :" + bno);
 		boardService.delete(bno);
-
+		/*
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
-
+		 */
 		//redirect:/board/list?pageNum=2&amount=10&type=T&keyword=사과
-		return "redirect:/board/list";
+		//return "redirect:/board/list";
+		
+		return "redirect:/board/list" + cri.getListLink();
+		//RedirectAttributes대신 criteria에 getListLink메서드를 만들어 사용할 수 있다.
 	}
 	
 	

@@ -6,6 +6,7 @@
 	</section>
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+			<item value="C:\Dev\spring_work\spring_boot_work\ex04"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
