@@ -24,7 +24,6 @@ public class EmployeesController {
 	
 	@GetMapping("emp_list") // employee/emp_list
 	public void emp_list(Model model) {
-		System.out.println("========================1========================");
 		List<EmployeeVO> emp_list = employeeService.emp_list();
 		model.addAttribute("emp_list", emp_list); // ("jsp에서 참조할 이름", 데이터)
 	}

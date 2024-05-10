@@ -14,15 +14,11 @@ public class PracticeServiceImpl implements PracticeService {
 	@Autowired
 	private PracticeMapper practiceMapper;
 	
-	@Override
-	public void write(PracticeVO vo) {
-		practiceMapper.writer(vo);
-		
-	}
-
+	
 	@Override
 	public List<PracticeVO> list() {
 		return practiceMapper.list();
 	}
+
 
 }

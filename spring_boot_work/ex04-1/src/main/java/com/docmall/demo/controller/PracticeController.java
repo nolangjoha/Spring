@@ -19,23 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class PracticeController {
 
+	//의존성 주입
 	@Autowired	
 	private PracticeService practiceService;
 	
-	
-	//글쓰기 폼
-	@GetMapping("write")
-	public void write() {
-		log.info("write 부름");
-
-	}
-	
-	
 	@GetMapping("list")
 	public void list(Model model) {
-		
 		List<PracticeVO>list = practiceService.list();
-		model.addAttribute("list", list);
+		model.addAttribute("list", list); // ("jsp에서 참조할 이름", 데이터 값)
 		
 			log.info("Contriller.java///list불렀음");
 	}

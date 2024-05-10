@@ -32,10 +32,10 @@ public class ReplyController {
 	private final ReplyService replyService;
 	
 	//요청주소. 
-	// 1) /replies/pages/100/1  (REST API기술이론에서 권장하는 주소형태, 기존보다 더 심플하다는 주장, @RestController 과 연관있음.)  
+	// 1) /replies/pages/511/1  (REST API기술이론에서 권장하는 주소형태, 기존보다 더 심플하다는 주장, @RestController 과 연관있음.)  
 		//   /replies/pages/100/1  주소(경로)에 존재하는 값을 사용할 때 구분되는 위치에 {이름}를 사용.
 		// 만약 bno자리에 100이란 값이 들어왔으면 {bno}로 받고 "bno"로 받아서 Long bno변수에 들어가는 것이다.
-	// 2) /replies?pages=1&bno=100   (전통적 주소타입)
+	// 2) /replies?pages=1&bno=511   (전통적 주소타입)
 	
 	
 	//produces의 역할? :  
@@ -47,7 +47,7 @@ public class ReplyController {
 		Map<String, Object> map = new HashMap<>();
 		
 		//1) 댓글목록 작업
-		Criteria cri = new Criteria(1, 10);  
+		Criteria cri = new Criteria(page, 5);  
 		List<ReplyVO> list = replyService.getListPaging(cri, bno);
 		map.put("list", list);
 		
