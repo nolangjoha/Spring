@@ -16,5 +16,9 @@ public interface ReplyMapper {
 				
 	int getCountByBno(Long bno);
 	
+	void insert(ReplyVO vo); 
+	
+	void update(ReplyVO vo);
+	
 }
 

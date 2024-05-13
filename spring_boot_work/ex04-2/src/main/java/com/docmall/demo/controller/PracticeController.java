@@ -32,7 +32,7 @@ public class PracticeController {
 	@PostMapping("write")
 	public String write(PracticeVO vo) {
 		log.info("Controller write() post타입 실행");
-		
+		practiceService.write(vo);
 		return "redirect:/practice/list";
 	}
 	
@@ -44,7 +44,7 @@ public class PracticeController {
 		List<PracticeVO>list = practiceService.list();
 		model.addAttribute("list", list); // ("jsp에서 참조할 이름", 데이터 값)
 		
-			log.info("Contriller.java///list불렀음");
+			log.info("Controller.java //list불렀음");
 	}
 	
 	

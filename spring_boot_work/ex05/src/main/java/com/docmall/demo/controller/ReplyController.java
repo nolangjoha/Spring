@@ -5,10 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 
 //댓글기능과 관련된 매핑주소를 관리하는 클래스
 //게시판의 get.jsp에서 작업에 필요한 내용
+//RESP API 개발방법
+
 
 @Slf4j  	// 로그객체 지원
 @RequiredArgsConstructor
@@ -44,6 +50,7 @@ public class ReplyController {
 	public ResponseEntity<Map<String, Object>> getList(@PathVariable("bno") Long bno, @PathVariable("page") int page){
 		
 		ResponseEntity<Map<String, Object>> entity = null;
+		
 		Map<String, Object> map = new HashMap<>();
 		
 		//1) 댓글목록 작업
@@ -59,6 +66,39 @@ public class ReplyController {
 		
 		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 		//ResponseEntity의 역할 : 데이터를 json형태로 보낸다. 클라이언트에게 보내는 데이터의 성격을 확실하게 함.
+		
+		return entity;
+	}
+	
+	//댓글저장
+	// 실제 반환타입은<String>
+	//  consumes = "application/json": 클라이언트에서 보내는 데이터는 json이어야 한다. 
+	//  produces = {MediaType.TEXT_PLAIN_VALUE} : 서버에서 클라이언트로 보내는 응답데이터는 text이다.
+	// @RequestBody : json데이터를 ReplyVO vo로 변환해주는 기능(jackson-databind-2.15.4.jar라이브러리가 실제 json작업을 함.
+	// 해당 기능을 사용하려면 pom.xml에 <artifactId>spring-boot-starter-web</artifactId>를 추가해야함.
+	@PostMapping(value = "/new", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> create(@RequestBody ReplyVO vo){ 
+		ResponseEntity<String> entity = null;
+		
+		log.info("댓글데이터 : " + vo);
+		
+		replyService.insert(vo);
+		
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	//댓글수정. put or patch
+	@PutMapping(value="/modify", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> modify(@RequestBody ReplyVO vo){ 
+		ResponseEntity<String> entity = null;
+		
+		log.info("댓글수정데이터 : " + vo);
+		
+		//댓글수정작업
+		replyService.update(vo);
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		
 		return entity;
 	}

@@ -31,5 +31,23 @@
 				bno = #{bno}
 	</select>
 
+	<insert id="insert" parameterType="com.docmall.demo.domain.ReplyVO">
+		
+		INSERT INTO
+			reply(rno, bno, retext, replyer)
+		VALUES 
+			(SEQ_REPLY.NEXTVAL, #{bno}, #{retext}, #{replyer})
+		
+	</insert>
+
+	<update id="update" parameterType="com.docmall.demo.domain.ReplyVO">
+		
+		UPDATE
+			reply
+		SET
+			retext = #{retext}, updatedate = SYSDATE
+		WHERE
+			rno = #{rno}
+	</update>
 
 </mapper>

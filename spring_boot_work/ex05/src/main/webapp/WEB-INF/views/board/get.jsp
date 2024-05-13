@@ -34,21 +34,21 @@
 
 <!--1) Include Handlebars from a CDN --> <!--핸들바-->
 <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-<!--2) Handlebar Template-->
+<!--2) Handlebar Template-->  <!--댓글표시-->
+<!--rno_{{rno}}이름을 댓글번호화 합쳐 유일하게 만들었음. id값으로 넣어주자-->
 <script id="reply-template" type="text/x-handlebars-template">
-   <table>
+   <table id="replytable">
     {{#each .}}
-    <tr>
-        <td>[{{rno}}] {{replyer}} [{{convertDate replydate}}]</td>
+    <tr>        
+        <td>[<span id="rno_{{rno}}">{{rno}}</span>] <span id="replyer_{{rno}}">{{replyer}}</span> [{{convertDate replydate}}]</td>
     </tr>
     <tr>
-        <td>{{retext}}</td>
+        <td><span id="retext_{{rno}}">{{retext}}</span></td>
     </tr>
     <tr>
         <td>
-            <button type="button" class="btn btn-primary btn-sm">답변</button>
-            <button type="button" class="btn btn-primary btn-sm">수정</button>
-            <button type="button" class="btn btn-danger btn-sm">삭제</button>
+            <button type="button" name="btnReplyModify" data-rno="{{rno}}" class="btn btn-primary btn-sm">수정</button>
+            <button type="button" name="btnReplyDelete" class="btn btn-danger btn-sm">삭제</button>
         </td>  
     </tr>
     {{/each}}                  
@@ -129,6 +129,10 @@
     </div>
     <div class ="row">
         <div class="col">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="btnReplyWrite">
+                댓글쓰기
+            </button>
             <!-- 댓글목록 위치 -->
             <div id="replyList"></div>
             <!-- 댓글페이지 위치 -->
@@ -188,6 +192,135 @@
             getPage(url);
         });
 
+        //댓글쓰기 대화상자 버튼 클릭
+        // $("댓글쓰기 버튼태그를 참조하는 선택자") : id값 btnReplyWrite을가진 태그를 참조하게 된다.
+        // document.getElementById("btnReplyWrite") 기능과 유사.
+        $("#btnReplyWrite").on("click", function(){
+            //console.log("댓글버튼을 클릭했다."); //웹페이지>검사>기능확인해보면서 console부분 확인
+    
+
+            $('#replyDialog').modal('show')
+
+        });
+
+        // 1)대화상자 댓글등록
+        $("#btnModalReplySave").on("click", function(){
+            //console.log("댓글등록 했다."); //확인용
+
+            //$("#replyer").val() : <input type='text' id='replyer'>태그의 value값
+            let replyer = $("#replyer").val();
+            let retext = $("#retext").val(); 
+
+            //댓글데이터를 json포맷으로 서버에 전송
+            //게시글 번호가 ${boardVO.bno}로 만들어졌다는걸 기억하자.
+            //서버에서 ${boardVO.bno}먼저 읽혀져서 게시글 번호가 먼저 출력될 것이다.
+            //replyer : replyer, retext : retext} : 자바스크립트 object문법이다.
+            //w3cschool가서 문법을 다시 확인해보자: 
+            // 1)댓글데이터를 자바스크립트의 Object문법으로 표현
+            let replyData = {bno : ${boardVO.bno }, replyer : replyer, retext : retext};
+
+            // 2) 댓글데이터를 json으로 변환하여 서비스에 전송(json은 표현법이며 xml과 비교해서 공부하자)
+            //console.log(JSON.stringify(replyData));
+            
+
+            $.ajax({
+                type : 'post',
+                url : '/replies/new',  //url : '댓글저장 매핑주소'
+                headers : {
+                    "Content-Type" : "application/json", "X-HTTP-Method-Override" : "POST"
+                },
+                dataType: 'text', //스프링주소의 메서드 리턴타입
+                data: JSON.stringify(replyData), //서버로 전송할 JSON데이터
+                success: function(data){
+                    if(data == "success") {  //success는 replyController에서 넘어온다. 대소문자 주의
+                        alert("댓글 등록됨.");
+                        let url = "/replies/pages/" + bno + "/" + replyPage; 
+                        getPage(url);
+
+                        //댓글작성자, 내용초기화
+                        $("#replyer").val("");
+                        $("#retext").val("");
+
+                        //modal diaLog화면에서 사라짐.
+                        $("#replyDialog").modal('hide');
+                    }
+                }
+            });
+
+        });
+    
+        // 2) 대화상자(modal)댓글 수정
+        $("#btnModalReplyUpdate").on("click", function(){
+
+            //$("#replyer").val() : <input type='text' id='replyer'>태그의 value값
+            let rno = $("#reply_rno").html();
+            let replyer = $("#replyer").val();
+            let retext = $("#retext").val(); 
+
+            // 1)댓글수정 데이터를 자바스크립트의 Object문법으로 표현
+            let replyData = {rno : $("#reply_rno").html(), replyer : replyer, retext : retext};
+
+            // 2) 댓글데이터를 json으로 변환하여 서비스에 전송(json은 표현법이며 xml과 비교해서 공부하자)
+            //console.log(JSON.stringify(replyData));
+            
+            //return;
+
+            $.ajax({  
+                type : 'put',  //댓글 수정작업은 REST API에서는 put, patch요청방식 사용.
+                url : '/replies/modify',  //url : '댓글저장 매핑주소'
+                headers : {  //웹브라우저는 원래 get,post방식만 지원한다. 하지만 아래와 같이 자바스크립트로 
+                            //작성을 해주면 마치 서버측에서 웹브라우저가 다른방식을 지원한느 것처럼 사용할수있다(트릭작업)
+                    "Content-Type" : "application/json", "X-HTTP-Method-Override" : "PUT"
+                },
+                dataType: 'text', //스프링주소의 메서드 리턴타입
+                data: JSON.stringify(replyData), //서버로 전송할 JSON데이터
+                success: function(data){
+                    if(data == "success") {  
+                        alert("댓글 수정됨..");
+                        let url = "/replies/pages/" + bno + "/" + replyPage; 
+                        getPage(url);
+
+                        //댓글작성자, 내용초기화
+                        $("#reply_rno").html("");  //"" 공백
+                        $("#replyer").val("");     //""공백
+                        $("#retext").val("");      //""공백
+
+                        //modal diaLog화면에서 사라짐.
+                        $("#replyDialog").modal('hide');
+                    }
+                }
+            });
+
+        });
+
+
+        // 댓글 수정버튼 클릭시 
+        /*
+        $("정적태그선택자").on("이벤트명","동적태그선택자", function(){
+
+        });
+        */
+        $("div#replyList").on("click","button[name='btnReplyModify']", function(){
+            //console.log("댓글 수정버튼 클릭");
+            //$(this) : 클릭한 수정버튼 태그 참조
+            let rno = $(this).data("rno");  //<button data-rno="500">수정</botton>
+            let replyer = $(this).parents("table#replytable").find("#replyer_" + rno).html(); 
+            let retext = $(this).parents("table#replytable").find("#retext_" + rno).html(); 
+
+            //console.log("rno", rno);
+            //console.log("replyer", replyer);
+            //console.log("retext", retext);
+
+            //모달 대화상자에 값을 출력하는 작업
+            $("#reply_rno").html(rno);  // 일반태그 <span>은 html()메서드 사용
+
+            //<input>태그는 val()메서드 사용
+            $("#replyer").val(replyer);
+            $("#retext").val(retext);  
+
+            $("#replyDialog").modal('show');  
+
+        });
 
     });
 
@@ -245,7 +378,7 @@
                                                                 // Handelbars.compile: compile로 문법검사 후 templateObj에 참조된다. ( {{}}가 핸들바 문법이다.)
         let replyHtml = templateObj(replyData);  //댓글목록데이터와 댓글 템플릿이 결합되어 replyHtml에 참조된다.
 
-        console.log("댓글목록:", replyHtml);
+        //console.log("댓글목록:", replyHtml);
 
         // target은 <div id="replyList"></div> 위치를 참조할거다.
         target.empty();         //empty: target변수가 참조하는 태그위치에 내용을 지운다.
@@ -297,8 +430,39 @@
             target.html(pageStr);
 
     }
-
-
 </script>
+
+
+<!--댓글쓰기 기능 작업-->
+  <!-- Modal -->
+  <div class="modal fade" id="replyDialog" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">댓글<span id="reply_rno"></span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="replyer">writer</label>
+                <input type="text" class="form-control" id="replyer" placeholder="Enter writer...">
+            </div>
+            <div class="form-group">
+                <label for="retext">content</label>
+                <textarea class="form-control" id="retext" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="btnModalReplySave">등록</button>
+          <button type="button" class="btn btn-primary" id="btnModalReplyUpdate">수정</button>
+          <button type="button" class="btn btn-danger" id="btnModalReplyDelete">삭제</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
