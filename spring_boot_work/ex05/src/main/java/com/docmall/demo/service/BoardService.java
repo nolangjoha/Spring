@@ -11,7 +11,7 @@ public interface BoardService {
 	void write (BoardVO vo);	
 	
 	//글목록
-	List<BoardVO> list();
+	//List<BoardVO> list();
 	List<BoardVO> listWithPaging(Criteria cri);
 	//list의 데이터 하나하나가 BoardVO의 구성을 사용한 데이터로 되어있다.
 	

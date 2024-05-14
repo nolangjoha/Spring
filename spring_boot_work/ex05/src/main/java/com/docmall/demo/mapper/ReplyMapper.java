@@ -20,5 +20,6 @@ public interface ReplyMapper {
 	
 	void update(ReplyVO vo);
 	
+	void delete(Integer rno);
 }
 

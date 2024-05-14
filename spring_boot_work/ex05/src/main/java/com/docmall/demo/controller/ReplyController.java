@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -102,5 +103,18 @@ public class ReplyController {
 		
 		return entity;
 	}
+	
+	//댓글삭제. delete		일반적주소:/delete?rno=댓글번호  // rest api 경로형태 주소 : /delete/500
+	@DeleteMapping(value="/delete/{rno}", produces = {MediaType.TEXT_PLAIN_VALUE} ) // {MediaType.TEXT_PLAIN_VALUE} 작동되면 결과값을 text로 주겠다.
+	public ResponseEntity<String> delete(@PathVariable("rno") Integer rno){
+		ResponseEntity<String> entity = null;
+		
+		//댓글삭제작업
+		replyService.delete(rno);
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+				
+		return entity;
+	}
+	
 	
 }

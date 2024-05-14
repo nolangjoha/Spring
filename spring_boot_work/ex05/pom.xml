@@ -5,16 +5,16 @@
    <parent>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-parent</artifactId>
-      <version>3.2.5</version>
+      <version>3.2.5</version> <!--스프링버전-->
       <relativePath/> <!-- lookup parent from repository -->
    </parent>
-   <groupId>com.docmall</groupId>
+   <groupId>com.docmall</groupId> <!--프로젝트 기본정보-->
    <artifactId>study</artifactId>
    <version>1.0.0</version>
    <name>ex05</name>
    <description>Study Spring Boot</description>
    <properties>
-      <java.version>17</java.version>
+      <java.version>17</java.version> <!-- JDK버전 -->
    </properties>
    <dependencies>
       <dependency>

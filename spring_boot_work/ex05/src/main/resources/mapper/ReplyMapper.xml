@@ -50,4 +50,13 @@
 			rno = #{rno}
 	</update>
 
+	<delete id="delete" parameterType="Integer">
+		
+		DELETE FROM
+			reply
+		WHERE
+			rno =${rno}
+			
+	</delete>
+
 </mapper>

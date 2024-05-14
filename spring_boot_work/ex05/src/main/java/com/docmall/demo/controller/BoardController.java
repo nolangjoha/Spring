@@ -93,8 +93,11 @@ public class BoardController {
 	
 	
 	//게시물 조회, 게시물수정
+	// 파라미터로 사용하고 있는 Criteria cri정보를 jsp에서 참조하고싶은 경우 @ModelAttribute("cri")를 사용.
 	@GetMapping(value= {"get","modify"})
-	public void get(Long bno, @ModelAttribute("cri") Criteria cri, Model model) {
+	public void get(Long bno, @ModelAttribute("cri") Criteria cri, Model model) { 
+		//Criteria cri넣은 이유 : 게시물을 보다가 수정, 삭제, 리스트 등을 누를때 원래 보고있었던 목록에서 사용됐던 검색과 페이지 정보를 가지고 있어야 하는데 그게 Criteria cri가 가지고 있다. 
+		//@ModelAttribute를 사용한 이유 : jsp에서 사용하기 위해서
 		
 		log.info("게시물번호:"+ bno);
 		

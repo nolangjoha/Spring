@@ -10,8 +10,8 @@ public interface BoardMapper {
 	//글쓰기 저장
 	void write (BoardVO vo);
 	
-	// 글목록
-	List<BoardVO> list();
+	// 글목록 // 이건 이제 사용 안함.
+	//List<BoardVO> list();
 	
 	//검색조건이 추가되는 목록
 	List<BoardVO> listWithPaging(Criteria cri);

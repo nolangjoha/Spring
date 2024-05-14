@@ -21,8 +21,10 @@
 </head>
 <body>
 	
+	<!-- 게시판 양식 -->
 	<div class="card">
 		<div class="card-header">
+		<!-- 게시글 -->
 		<h3 class="card-title">게시판</h3>
 		</div>
 		
@@ -51,16 +53,7 @@
 		</table>
 		</div>
 		
-	private Long bno;
-	private String title;
-	private String content;
-	private String writer;
-	private Date regdate;
-	private Date update;
-	private int viewcount;
-		
-		
-		
+		<!-- 게시글 페이지 목록 -->
 		<div class="card-footer clearfix">
 		<ul class="pagination pagination-sm m-0 float-right">
 		<li class="page-item"><a class="page-link" href="#">«</a></li>

@@ -48,7 +48,7 @@
     <tr>
         <td>
             <button type="button" name="btnReplyModify" data-rno="{{rno}}" class="btn btn-primary btn-sm">수정</button>
-            <button type="button" name="btnReplyDelete" class="btn btn-danger btn-sm">삭제</button>
+            <button type="button" name="btnReplyDelete" data-rno="{{rno}}" class="btn btn-danger btn-sm">삭제</button>
         </td>  
     </tr>
     {{/each}}                  
@@ -120,7 +120,7 @@
                 <div class="card-footer">
                     <button type="button" class="btn btn-primary" onclick="fn_modify()">Modify</button>
                     <button type="button" class="btn btn-danger" onclick="fn_delete(${boardVO.bno})">Delete</button>
-                    <button type="button" class="btn btn-primary" onclick="fn_list(${boardVO.bno})">List</button>
+                    <button type="button" class="btn btn-primary" onclick="fn_list()">List</button>
                 </div>
                 </div>
                 </form>
@@ -192,12 +192,22 @@
             getPage(url);
         });
 
-        //댓글쓰기 대화상자 버튼 클릭
+        // [댓글쓰기 대화상자 버튼 클릭]
         // $("댓글쓰기 버튼태그를 참조하는 선택자") : id값 btnReplyWrite을가진 태그를 참조하게 된다.
         // document.getElementById("btnReplyWrite") 기능과 유사.
         $("#btnReplyWrite").on("click", function(){
             //console.log("댓글버튼을 클릭했다."); //웹페이지>검사>기능확인해보면서 console부분 확인
-    
+
+            //댓글작성자, 내용 초기화
+            $("#reply_rno").html("");
+            $("#replyer").val("");
+            $("#retext").val("");
+
+            //모달버튼 화면보임/숨김작업
+            // name에 btnModalReply값을 가지고 있는 버튼태그를 의미
+            $("button[name='btnModalReply']").hide(); // 등록, 수정, 삭제3개 버튼을 화면에서 숨김
+            //등록, 수정, 삭제 버튼을 모두 숨긴 상태로 다시 수정만 보여주게 하자
+            $("#btnModalReplySave").show();
 
             $('#replyDialog').modal('show')
 
@@ -249,7 +259,7 @@
 
         });
     
-        // 2) 대화상자(modal)댓글 수정
+        // 2) 모달 대화상자댓글 수정
         $("#btnModalReplyUpdate").on("click", function(){
 
             //$("#replyer").val() : <input type='text' id='replyer'>태그의 value값
@@ -293,8 +303,47 @@
 
         });
 
+        // 3) 모달 대화상자댓글 삭제
+        $("#btnModalReplyDelete").on("click", function(){
 
-        // 댓글 수정버튼 클릭시 
+            // 1)댓글삭제 데이터(댓글번호만 있으면 된다.)
+            //let replyData = {rno : $("#reply_rno").html()};
+
+            // 2) 댓글데이터를 json으로 변환하여 서비스에 전송(json은 표현법이며 xml과 비교해서 공부하자)
+            //console.log(JSON.stringify(replyData));
+
+            //return;
+
+            $.ajax({  
+                type : 'delete',  //댓글 수정작업은 REST API에서는 delete요청방식 사용.
+                url : '/replies/delete/'+ $("#reply_rno").html(),  //url : '댓글저장 매핑주소'
+                headers : {  //웹브라우저는 원래 get,post방식만 지원한다. 하지만 아래와 같이 자바스크립트로 
+                            //작성을 해주면 마치 서버측에서 웹브라우저가 다른방식을 지원한느 것처럼 사용할수있다(트릭작업)
+                    "Content-Type" : "application/json", "X-HTTP-Method-Override" : "DELETE"
+                },
+                dataType: 'text', //스프링주소의 메서드 리턴타입
+              //  data: JSON.stringify(replyData), //서버로 전송할 JSON데이터
+                success: function(data){
+                    if(data == "success") {  
+                        alert("댓글 삭제됨..");
+                        let url = "/replies/pages/" + bno + "/" + replyPage; 
+                        getPage(url);
+
+                        //댓글작성자, 내용초기화
+                        $("#reply_rno").html("");  //"" 공백
+                        $("#replyer").val("");     //""공백
+                        $("#retext").val("");      //""공백
+
+                        //modal diaLog화면에서 사라짐.
+                        $("#replyDialog").modal('hide');
+                    }
+                }
+            });
+
+        });
+
+
+        // [댓글 수정버튼 클릭시] 
         /*
         $("정적태그선택자").on("이벤트명","동적태그선택자", function(){
 
@@ -311,6 +360,9 @@
             //console.log("replyer", replyer);
             //console.log("retext", retext);
 
+            $("button[name='btnModalReply']").hide();
+            $("#btnModalReplyUpdate").show();
+
             //모달 대화상자에 값을 출력하는 작업
             $("#reply_rno").html(rno);  // 일반태그 <span>은 html()메서드 사용
 
@@ -321,6 +373,77 @@
             $("#replyDialog").modal('show');  
 
         });
+
+        // [댓글 삭제버튼 클릭시] 
+        $("div#replyList").on("click","button[name='btnReplyDelete']", function(){
+            //console.log("댓글 삭제버튼 클릭");
+            //$(this) : 클릭한 삭제버튼 태그 참조
+            let rno = $(this).data("rno");  //<button data-rno="500">수정</botton>
+            let replyer = $(this).parents("table#replytable").find("#replyer_" + rno).html(); 
+            let retext = $(this).parents("table#replytable").find("#retext_" + rno).html(); 
+
+            //console.log("rno", rno);
+            //console.log("replyer", replyer);
+            //console.log("retext", retext);
+
+            $("button[name='btnModalReply']").hide();
+            $("#btnModalReplyDelete").show();
+
+            //모달 대화상자에 값을 출력하는 작업
+            $("#reply_rno").html(rno);  // 일반태그 <span>은 html()메서드 사용
+
+            //<input>태그는 val()메서드 사용
+            $("#replyer").val(replyer);
+            $("#retext").val(retext);  
+
+            $("#replyDialog").modal('show');  
+
+        });
+
+    
+            // 2) 대화상자(modal)댓글 수정
+        $("#btnModalReplyUpdate").on("click", function(){
+
+            //$("#replyer").val() : <input type='text' id='replyer'>태그의 value값
+            let rno = $("#reply_rno").html();
+            let replyer = $("#replyer").val();
+            let retext = $("#retext").val(); 
+
+            // 1)댓글수정 데이터를 자바스크립트의 Object문법으로 표현
+            let replyData = {rno : $("#reply_rno").html(), replyer : replyer, retext : retext};
+
+            // 2) 댓글데이터를 json으로 변환하여 서비스에 전송(json은 표현법이며 xml과 비교해서 공부하자)
+            //console.log(JSON.stringify(replyData));
+            
+            //return;
+
+            $.ajax({  
+                type : 'put',  //댓글 수정작업은 REST API에서는 put, patch요청방식 사용.
+                url : '/replies/modify',  //url : '댓글저장 매핑주소'
+                headers : {  //웹브라우저는 원래 get,post방식만 지원한다. 하지만 아래와 같이 자바스크립트로 
+                            //작성을 해주면 마치 서버측에서 웹브라우저가 다른방식을 지원한느 것처럼 사용할수있다(트릭작업)
+                    "Content-Type" : "application/json", "X-HTTP-Method-Override" : "PUT"
+                },
+                dataType: 'text', //스프링주소의 메서드 리턴타입
+                data: JSON.stringify(replyData), //서버로 전송할 JSON데이터
+                success: function(data){
+                    if(data == "success") {  
+                        alert("댓글 수정됨..");
+                        let url = "/replies/pages/" + bno + "/" + replyPage; 
+                        getPage(url);
+
+                        //댓글작성자, 내용초기화
+                        $("#reply_rno").html("");  //"" 공백
+                        $("#replyer").val("");     //""공백
+                        $("#retext").val("");      //""공백
+
+                        //modal diaLog화면에서 사라짐.
+                        $("#replyDialog").modal('hide');
+                    }
+                }
+            });
+
+        });   
 
     });
 
@@ -456,9 +579,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="btnModalReplySave">등록</button>
-          <button type="button" class="btn btn-primary" id="btnModalReplyUpdate">수정</button>
-          <button type="button" class="btn btn-danger" id="btnModalReplyDelete">삭제</button>
+          <button type="button" class="btn btn-primary" name="btnModalReply" id="btnModalReplySave">등록</button>
+          <button type="button" class="btn btn-primary" name="btnModalReply" id="btnModalReplyUpdate">수정</button>
+          <button type="button" class="btn btn-danger" name="btnModalReply" id="btnModalReplyDelete">삭제</button>
         </div>
       </div>
     </div>

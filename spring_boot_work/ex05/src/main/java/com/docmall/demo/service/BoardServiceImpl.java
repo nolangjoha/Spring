@@ -22,13 +22,13 @@ public class BoardServiceImpl implements BoardService {
 	public void write(BoardVO vo) {
 		boardMapper.write(vo);
 	}
-
+/*
 	@Override
 	public List<BoardVO> list() {
 		// TODO Auto-generated method stub
 		return boardMapper.list();
 	}
-
+*/
 	@Override
 	public BoardVO get(Long bno) {
 		//조회수 증가
