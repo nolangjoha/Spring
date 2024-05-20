@@ -60,6 +60,7 @@
 
     <!--댓글은 핸들바써서 화면에 뿌려줌-->
     <!--파일전송을 uploadResult에 뿌려주겠다.-->
+    <!-- 서버로부터 받아온 파일목록정보를 출력하는 위치 //헤딩작업은 ul태그 안에 append된다.-->
     <div class="uploadResult">
         <ul></ul>
     </div>
@@ -67,6 +68,36 @@
 
 
 <script>
+    function checkExtension(fileName, fileSize){
+        //파일의 확장자 제한, 파일크기 제한
+        let regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$"); //파일제한
+        let maxSize = 5 * 1024 *1024; //5mb : 기본용량 제한
+
+        if(fileSize >= maxSize){
+            alert("파일 크기 용량 초과");
+            return false;
+        }
+
+        if(regex.test(fileName)){
+            alert("해당종류의 파일은 업로드 불가");
+            return false;
+        }
+
+        return true;
+    }
+    
+    function showImage(fileCalPath){
+      //$(".원본이미지 보여줄 선택자").css("display","flex").show();
+        $(".bigPictureWrapper").css("display","flex").show();  //실제 보여주는 위치는 bigPicture
+        $(".bigPicture").html("<img src='display?fileName=" + fileCalPath + "'>").animate({width: '100%', height: '100%'}, 1000);
+
+    }
+
+
+
+
+
+
     $(document).ready(function(){
 
         // [파일전송 클릭버튼]
@@ -84,6 +115,12 @@
             console.log(files);
             
             for(let i = 0; i<files.length; i++){
+
+            //files[i].name : 파일이름, files[i].size : 파일크기
+            if(!checkExtension(files[i].name, files[i].size)){
+                return false;
+            }
+
             	//uploadFile은 스프링에서 참조하게 된다. 파일들을 uploadFile의 이름으로 보내는 것이다.
                 formData.append("uploadFile", files[i]);
             }				
@@ -121,19 +158,22 @@
         $(".uploadResult").on("click", "span", function() {
             console.log("삭제이벤트");
 
-
-            let targetFile = $(this).data("file");  //data-file
+            // $(this).data("file") : 2024%5C05%5C20/s_d35c7e8d-dd10-4f20-8b12-692c1c161674_에그타르트.jpg
+            //  '/'는 dateFolderName
+            let targetFile = $(this).data("file").split('/');  //data-file
             let type = $(this).data("type");  // data-type
 
 
             //파일명에서 날짜폴더명을 분리해야 한다.
-            console.log("targetFile" + targetFile);
+            console.log("targetFile[0]" + targetFile[0]);
+            console.log("targetFile[1]" + targetFile[1]);
             console.log("type", type);
 
+            //return;
 
             $.ajax({
                 url: 'deleteFile',
-                data: {fileName : targetFile, type: type}, // 자바스크립트  object문법
+                data: {dateFolderName: targetFile[0], fileName : targetFile[1], type: type}, // 자바스크립트  object문법
                 dataType: 'text', //스프링메서드 리턴타입
                 type: 'post',
                 success: function(result){
@@ -141,17 +181,8 @@
                         alert("이미지가 삭제됨.");
                     }
                 }
-
-
             });
-
-
         });
-
-
-
-
-
     });  // ready end
 
 
@@ -163,17 +194,17 @@
 		let str = "";
 
 		$(uploadResultArr).each(function(i, obj) {
-
+						  //each는 for문과 같은 역할
 
 			if(!obj.image) {  // 일반파일
-				let fileCalPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid);
+				let fileCalPath = encodeURIComponent(obj.uploadPath) + "/" + obj.uuid;
 
 				str += "<li><div><a href='/upload/download?fileName=" + fileCalPath + "'><img src='/img/attach.png'>" +
 				obj.fileName + "</a><span style='cursor:pointer;' data-file=\'" + fileCalPath + "\' data-type='file'> X </span></div></li>";
 			}else {			// 이미지파일
 
                 //let fileCalPath = obj.uploadPath + "/" + "s_" + obj.uuid;  // 에러발생 400. 역슬래시 문자를 서버에서 허용안함.
-				let fileCalPath = encodeURIComponent(obj.uploadPath + "/" + "s_" + obj.uuid);
+				let fileCalPath = encodeURIComponent(obj.uploadPath) + "/" + "s_" + obj.uuid;
 				let originPath = obj.uploadPath + "\\" + obj.uuid;
 
 				originPath = originPath.replace(new RegExp(/\\/g), "/");
@@ -182,7 +213,7 @@
 					"<span style='cursor:pointer;' data-file=\'" + fileCalPath + "\' data-type='image'> X </span></li>";
 			}
 		});
-
+		//파일정보 리스트형태의 작업한 태그내용을 자식레벨로 추가하는 작업
 		uploadResult.append(str);
 	}
 

@@ -163,15 +163,15 @@ public class FileUtils {
 	 - String fileName : 파일명(날자폴더명 포함)
 	*/
 	
-	public static void delete(String uploadPath, String fileName, String type) {
+	public static void delete(String uploadPath, String dateFolderName, String fileName, String type) {
 		
-		// 1)원본파일  예)"C:/Dev/upload/pds"  "2024/05/06"     "2f48f241-9d64-4d16-bf56-70b9d4e0e79a_abc.png"
-		File file1 = new File((uploadPath + "\\" + fileName).replace('\\', File.separatorChar));
+		// 1)thumnail파일  예)"C:/Dev/upload/pds"  "2024/05/06"     "s_2f48f241-9d64-4d16-bf56-70b9d4e0e79a_abc.png"
+		File file1 = new File((uploadPath + "\\" + dateFolderName + "\\" + fileName).replace('\\', File.separatorChar));
 		if(file1.exists()) file1.delete();  //파일이 존재하면 삭제한다.
 
 		if(type.equals("image")) {
-		// 2) thumnail파일
-			File file2 = new File((uploadPath + "\\" + "_s" + fileName).replace('\\', File.separatorChar));
+		// 2) 원본파일 fileName.substring(2)) : s_2f48f241-9d64-4d16-bf56-70b9d4e0e79a_abc.png
+			File file2 = new File((uploadPath + "\\" + dateFolderName + "\\" + fileName.substring(2)).replace('\\', File.separatorChar));
 			if(file2.exists()) file2.delete();  // 썸네일파일이 존재하면 삭제한다.
 		}
 		

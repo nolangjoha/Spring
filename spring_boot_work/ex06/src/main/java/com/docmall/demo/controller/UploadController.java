@@ -1,6 +1,8 @@
 package com.docmall.demo.controller;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,11 +76,16 @@ public class UploadController {
 	@ResponseBody //ajax요청받는 매핑주소는 이 어노테이션을 달아야 한다.
 	@PostMapping(value="uploadAjaxAction", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<List<AttachFileDTO>> uploadAjaxAction(MultipartFile[] uploadFile){  
-		ResponseEntity<List<AttachFileDTO>> entity = null; 
+		ResponseEntity<List<AttachFileDTO>> entity = null;  	//MultipartFile[]를 본다면 MultipartConfig.java와 연관지어 생각해야 한다. 
+																/*
+																스프링부트 2.7에서는 multipart가 기본 bean으로 등록되어 있다.
+																스프링부트 3 이상부터는 multipart 설정 클래스를 생성하여, bean으로 등록해야 한다.
+																*/
 		
 		//업로드한 파일정보 목록
 		List<AttachFileDTO> list = new ArrayList<>();
 		
+		//업로드하는 날짜를 이용한 폴더
 		String uploadDateFolder = fileUtils.getDateFolder();
 		
 		for(MultipartFile multipartFile : uploadFile) {
@@ -90,6 +97,7 @@ public class UploadController {
 			
 			// 2) 실제 업로드한 파일명
 			attachFileDTO.setUuid(fileUtils.uploadFile(uploadFolder, uploadDateFolder, multipartFile));
+			//uploadFile : 실제 업로드한 파일명을 반환해줌. 그리고 여기서는 그 값을 setUuid에 넣는다.
 			
 			// 3) 날짜 폴더명
 			attachFileDTO.setUploadPath(uploadDateFolder);
@@ -125,17 +133,30 @@ public class UploadController {
 		}
 		
 		
-		// [파일삮제]
+		// [3. 파일삭제]
 		@PostMapping(value = "deleteFile")
 		@ResponseBody
 		public ResponseEntity<String> deleteFile(String dateFolderName, String fileName, String type){
+	
 			
+			try {
+				//클라이언트에서 \문자 데이터를 인코딩으로 받아, 서버에서는 디코딩 하여 처리함.
+				//2024%5C05%5C20  ->  2024\05\20
+				dateFolderName = URLDecoder.decode(dateFolderName, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+					
+			
+			log.info("dateFolderName: " + dateFolderName);
 			log.info("fileName: " + fileName);
 			log.info("type: " + type);
 			
+			
 			ResponseEntity<String> entity = null;
 			
-			fileUtils.delete(uploadFolder, fileName, type);
+			fileUtils.delete(uploadFolder, dateFolderName, fileName, type);
 			
 			entity = new ResponseEntity<String>("success", HttpStatus.OK);
 			return entity;
