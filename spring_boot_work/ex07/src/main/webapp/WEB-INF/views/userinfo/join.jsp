@@ -76,9 +76,10 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
                   <div class="col-sm-4">
                   <input type="text" class="form-control" id="u_id" name="u_id" placeholder="아이디">
                   </div>
-                  <div class="col-sm-4">
-                    <button type="button" class="btn btn-outline-primary">ID Check</button>
-                  </div>
+              <div class="col-sm-2">
+                <button type="button" class="btn btn-outline-primary" id="btnIDCheck">ID Check</button>
+              </div>
+              <span for="u_id" class="col-sm-4 col-form-label" id="idCheckMsg" style="color : red"></span>
               </div>
               <div class="form-group row">
                   <label for="u_pwd" class="col-sm-2 col-form-label">PWD</label>
@@ -102,7 +103,7 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
                   <input type="text" class="form-control" id="u_email" name="u_email" placeholder="이메일">
                   </div>
                   <div class="col-sm-2">
-                    <button type="button" class="btn btn-outline-primary">메일 인증 요청</button>
+                    <button type="button" class="btn btn-outline-primary" id="btnMailAuthcode">메일 인증 요청</button>
                   </div>
                   <div class="col-sm-3">
                     <input type="text" class="form-control" id="u_authcode" placeholder="인증코드 입력">
@@ -163,7 +164,7 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
 
 
 
-<!-- 우변번호 기능 daum post api-->
+<!-- [우편번호 기능 daum post api]-->
 <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
 <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
 <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
@@ -257,6 +258,75 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
         element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
     }
 </script>
+
+
+<!--[제이쿼리사용]-->
+<script>
+    $(document).ready(function(){
+        
+        let useIDCheck = false;  // 아이디 중복체크 기능을 사용했는지 유무 확인(전역변수)
+          
+        // [1. 아이디 체크 기능]
+        $("#btnIDCheck").on("click", function(){
+            
+            //회원가입칸에 입력한 값을 읽어온다.
+            if($("#u_id").val() == "") {
+                alert("아이디를 입력하세요");
+                $("#u_id").focus();
+                
+                return; //아이디 값이 들어가지 않았을 때 아래가 진행되면 안되므로 return을 넣어줌.
+            } 
+            
+            // [DB와 연결]
+            $.ajax({
+                url: '/userinfo/idCheck',   //주소는 소문자를 권장한다. (대문자를 써도 문제가 되진 않음.) 
+                type: 'get',
+                data: {u_id : $("#u_id").val()}, //여기 있는 u_id는 DB에 있는 u_id와 반드시 일치해야 한다.  
+                dataType: 'text',  // 이자리는 text(기본값), html, xml, json도 올수 있는 자리다.
+                success: function(result) {  //result에는 idUse값 혹은 'no' 둘중 하나가 들어온다. 
+                    if(result == "yes"){
+                        alert("사용 가능한 아이디 입니다.")
+                        $("#idCheckMsg").html("※ 사용 가능한 아이디 입니다.");
+                    }else{
+                        alert("중복된 아이디 입니다.")
+                        $("#idCheckMsg").html("※ 중복된 아이디 입니다.");
+                        $("#u_id").val(""); //val값에 아무것도 안써있으면 u_id값을 읽어오고, 무언가 있으면 그 값을 u_id에 넣어준다. 여기선 다시 공백으로 만들기 위해 ""을 넣어준다.
+                        $("#u_id").focus();
+                        
+                    }
+                }
+            });
+
+        });
+
+        // [2. 이메일 인증 기능]
+        $("#btnMailAuthcode").on("click", function() {
+
+            if($("#u_email").val() == "") {
+                alert("메일을 입력하세요.");
+                $("#u_email").focus();
+                return;
+            }
+
+            $.ajax({
+                url: '/email/authcode',
+                type:'get',
+                data: {receiverMail : $("#u_email").val()},
+                dataType: 'text',
+                success: function(result) {
+                  if(result =="success"){
+                    alert("메일로 인증코드가 발급되었습니다.")
+                  }
+                }
+              
+            });
+        });
+
+    });
+</script>
+
+
+
   </body>
 </html>
     
