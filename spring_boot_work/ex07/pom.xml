@@ -68,6 +68,13 @@
          <groupId>org.apache.tomcat.embed</groupId>
          <artifactId>tomcat-embed-jasper</artifactId>
       </dependency>
+      
+      <!-- 타임리프 -->
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      </dependency>
+      
       <dependency>
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-starter</artifactId>
@@ -89,18 +96,23 @@
    
    	  <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
 	  <!-- 스프링부트에서는 메일 라이브러리가 존재한다. -->
+	  <!-- JavaMailSender인터페이서 /  JavaMailSenderImpl클래스 사용을 위함. -->
 	  <dependency>
 		  <groupId>org.springframework.boot</groupId>
 		  <artifactId>spring-boot-starter-mail</artifactId>
  	  </dependency>
 
+
+
 		<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+		<!-- 이메일기능 추가중 생성, 오류나서 주석
 		<dependency>
 		    <groupId>com.sun.mail</groupId>
 		    <artifactId>javax.mail</artifactId>
 		    <version>1.5.1</version>
 		</dependency>
-
+		-->
+		
    </dependencies>
 
 	<build>

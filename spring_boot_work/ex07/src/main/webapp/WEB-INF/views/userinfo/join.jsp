@@ -103,13 +103,13 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
                   <input type="text" class="form-control" id="u_email" name="u_email" placeholder="이메일">
                   </div>
                   <div class="col-sm-2">
-                    <button type="button" class="btn btn-outline-primary" id="btnMailAuthcode">메일 인증 요청</button>
+                    <button type="button" class="btn btn-outline-primary" id="btnMailAuthcode">메일인증 요청</button>
                   </div>
                   <div class="col-sm-3">
                     <input type="text" class="form-control" id="u_authcode" placeholder="인증코드 입력">
                   </div>
                   <div class="col-sm-2">
-                    <button type="button" class="btn btn-outline-primary">인증확인</button>
+                    <button type="button" class="btn btn-outline-primary" id="btnConfirmAuth">인증확인</button>
                   </div>
               </div>
               <div class="form-group row">
@@ -299,7 +299,7 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
 
         });
 
-        // [2. 이메일 인증 기능]
+        // [2. 이메일 인증코드 요청]
         $("#btnMailAuthcode").on("click", function() {
 
             if($("#u_email").val() == "") {
@@ -321,6 +321,54 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
               
             });
         });
+
+
+        // [3. 이메일 인증확인]
+        $("#btnConfirmAuth").on("click", function() {
+            
+            if($("#u_authcode").val() == "") {
+                alert("인증코드를 입력하세요");
+                $("#u_authcode").focus();
+                return;
+            }
+
+            $.ajax({
+                url : '/email/confirm_authcode',
+                type : 'get',
+                data : {authcode : $("#u_authcode").val()},
+                dataType: 'text',
+                success : function(result){
+                    if(result == "success") {
+                        alert("인증이 확인되었습니다");
+                    }else if(result == "fail") {
+                        alert("인증코드 값을 확인해주세요.");
+                    }else if(result == "request") {
+                        alert("인증코드가 소멸되었습니다. \n인증요청메일을 다시 진행해주세요.")
+                    }
+
+                },
+                //스프링쪽에서 에러가 발생해서 클라이언트쪽에 표시될 때 아래코드가 실행 됨.
+                error : function(){
+
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     });
 </script>
