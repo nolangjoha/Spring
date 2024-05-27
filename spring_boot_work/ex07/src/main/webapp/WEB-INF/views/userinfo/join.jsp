@@ -68,8 +68,8 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
           
           <!-- --u_id, u_pwd, u_name, u_email, u_zip_code, u_addr, u_addrdetail, u_phone, u_regdate  -->
           <!-- U_ID, U_PWD, U_NAME, U_EMAIL, U_ZIP_CODE, U_ADDR, U_ADDRDETAIL, U_PHONE, U_REGDATE -->
-
-          <form class="form-horizontal">
+          <!-- id="joinForm" -->
+          <form class="form-horizontal" id="joinForm" action="/userinfo/join" method="post">
           <div class="card-body">
               <div class="form-group row">
                   <label for="u_id" class="col-sm-2 col-form-label">ID</label>
@@ -142,8 +142,8 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
               </div>
           </div>
           
-          <div class="card-footer">
-            <button type="submit" class="btn btn-info">Sign up</button>
+          <div class="card-footer">   <!-- id="btnJoin" -->
+            <button type="button" class="btn btn-info" id="btnJoin">Sign up</button>
             <button type="reset" class="btn btn-default float-right">Cancel</button>
           </div>
           
@@ -296,8 +296,8 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
                     }
                 }
             });
-
         });
+
 
         // [2. 이메일 인증코드 요청]
         $("#btnMailAuthcode").on("click", function() {
@@ -355,6 +355,24 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
         });
 
 
+        // [4. 회원가입 클릭] 
+        // 아래 두 코드는 양립할 수 없다.
+        // 1) <button type="submit" class="btn btn-info" id="btnJoin">Sign up</button>  --> click이벤트 사용안됨 // 폼 submit이벤트 사용       
+        /*
+        $('#joinForm').on("submit", function(e){
+            e.preventDefault();
+            console.log("submit event");
+            return;
+        });
+        */
+
+        // 2) <button type="button" class="btn btn-info" id="btnJoin">Sign up</button>  --> click이벤트 사용가능        
+        $('#btnJoin').on("click", function(){
+            console.log("click event");
+
+            //회원가입 유효성검사.
+            $("#joinForm").submit();
+        });
 
 
 
@@ -368,9 +386,7 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
 
 
 
-
-
-    });
+    });  //ready event end
 </script>
 
 
