@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>   
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>    
+    
 <header>
   <!-- Fixed navbar -->
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -9,12 +12,24 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/userinfo/join">Join <!-- <span class="sr-only">(current)</span> --></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/userinfo/login">LogIn</a>
-        </li>
+       <!--  인증 전 페이지 -->
+       <c:if test="${sessionScope.login_status == null }">
+	        <li class="nav-item active">       
+	          <a class="nav-link" href="/userinfo/join">Join <!-- <span class="sr-only">(current)</span> --></a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" href="/userinfo/login">LogIn</a>
+	        </li>
+	   </c:if>     
+         <!-- 인증 후 페이지 -->
+         <c:if test="${sessionScope.login_status != null}">
+         	<li class="nav-item">
+	          <a class="nav-link" href="/userinfo/mypage">Mypage</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" href="/userinfo/logout">Logout</a>
+	        </li>   
+	     </c:if>                
         <li class="nav-item">
           <a class="nav-link disabled">Disabled</a>
         </li>

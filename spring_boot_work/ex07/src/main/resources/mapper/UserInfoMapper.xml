@@ -44,7 +44,8 @@
         u_zip_code, 
         u_addr, 
         u_addrdetail, 
-        u_phone
+        u_phone,
+        u_regdate
 	FROM 
 	    userinfo
 	WHERE 
@@ -52,6 +53,38 @@
 		
 	</select>
 
+	<!-- 마이페이지 수정하기  -->
+	<update id="modify" parameterType="com.docmall.demo.domain.UserInfoVO">
+		UPDATE
+		    userinfo
+		SET
+		    u_email = #{u_email}, 
+		    u_zip_code = #{u_zip_code}, 
+		    u_addr = #{u_addr}, 
+		    u_addrdetail = #{u_addrdetail}, 
+		    u_phone = #{u_phone}    
+		WHERE   
+		    u_id = #{u_id} 		
+	</update>
+
+	<!-- 비밀번호 변경 -->
+	<!-- 파라미터가 2개면 매퍼클래스에서 파람작업을 해주고 마이보티스에서 파라미터 타입은 map이다. -->
+	<update id="changePw" parameterType="map">
+		UPDATE
+		    userinfo
+		SET
+		    u_pwd = #{new_pwd}   
+		WHERE   
+		    u_id = #{u_id}
+	</update>
+
+	<!-- 회원탈퇴 기능 -->
+	<delete id="delete" parameterType="map">
+		DELETE FROM
+			userinfo
+		WHERE
+		 	u_id = #{u_id}
+	</delete>
 
 
 </mapper>

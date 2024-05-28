@@ -45,6 +45,28 @@ public class UserInfoServiceImpl implements UserInfoService  {
 	}
 
 	
+	// [마이페이지 수정하기]
+	@Override
+	public void modify(UserInfoVO vo) {
+		userInfoMapper.modify(vo);
+		
+	}
+
+	// [비밀번호 변경하기]
+	@Override
+	public void changePw(String u_id, String new_pwd) {
+		userInfoMapper.changePw(u_id, new_pwd);		
+	}
+
+	// [회원 탈퇴하기]
+	@Override
+	public void delete(String u_id) {
+		userInfoMapper.delete(u_id);
+		
+		
+	}
+
+	
 	
 	
 	

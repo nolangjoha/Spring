@@ -74,14 +74,14 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
               <div class="form-group row">
                   <label for="u_id" class="col-sm-4 col-form-label">ID</label>
                   <div class="col-sm-8">
-                  <input type="text" class="form-control" id="u_id" name="u_id" placeholder="아이디">
+                  <input type="text" class="form-control" id="u_id" name="u_id" placeholder="아이디" value="user01">
                   </div>
               <span for="u_id" class="col-sm-4 col-form-label" id="idCheckMsg" style="color : red"></span>
               </div>
               <div class="form-group row">
                   <label for="u_pwd" class="col-sm-4 col-form-label">PWD</label>
                   <div class="col-sm-8">
-                  <input type="password" class="form-control" id="u_pwd" name="u_pwd" placeholder="비밀번호">
+                  <input type="password" class="form-control" id="u_pwd" name="u_pwd" placeholder="비밀번호" value="1234">
                   </div>
               </div>
           </div>
