@@ -1,5 +1,7 @@
 package com.docmall.demo.controller;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.docmall.demo.domain.UserInfoVO;
+import com.docmall.demo.dto.EmailDTO;
 import com.docmall.demo.dto.LoginDTO;
+import com.docmall.demo.service.EmailService;
 import com.docmall.demo.service.UserInfoService;
 
 
@@ -33,6 +37,10 @@ public class UserInfoController {
 	//이 코드는 service단계에서 작업해줄것이므로 serviceImpl에 작성해줄것이다.
 	//아래 코드는 학업용으로 남겨놓음. 
 	private final PasswordEncoder passwordEncoder;
+	
+	//이메일 주입작업
+	private final EmailService emailService;
+	
 	
 	// [회원가입폼]
 	@GetMapping("/join")
@@ -248,6 +256,108 @@ public class UserInfoController {
 			rttr.addFlashAttribute("msg", msg);  //jsp에서 msg변수를 사용목적
 	
 			return "redirect:" + url;
+	}
+	
+	
+	// [아이디 찾기 화면]
+	@GetMapping("/idfind")
+	public void idfind() {
+		
+	}
+	
+	// [아이디 찾기]
+	@PostMapping("/idfind")
+	public String idfind(String u_name, String u_email, String authcode, HttpSession session, RedirectAttributes rttr) throws Exception {
+		
+		String url = "";
+		String msg = "";
+						
+		// EmailController.java와 비교하며 값을 넣어야 한다.
+		// 인증코드 확인
+		if(authcode.equals(session.getAttribute("authcode"))) {
+
+			// 이름과 메일주소 확인.
+			String u_id = userInfoService.idfind(u_name, u_email);
+			if(u_id != null) {		
+
+				//아이디를 내용으로 메일발송작업 (emailServiceImpl에서 기능을 가져와야한다. 주입작업을 해야한다★★★★★)
+				String subject = "Docmall 아이디를 보내드립니다.";
+				EmailDTO dto = new EmailDTO("DocMall", "DocMall", u_email, subject, u_id);
+				
+				emailService.sendMail("emailIDResult", dto, u_id);   //emailIDResult(타임리프 파일명)
+
+				session.removeAttribute("authcode");  //세션 만료시키기
+				
+				msg = "success";
+				url = "/userinfo/login";
+				rttr.addFlashAttribute("msg", msg);
+				
+			}else {
+				msg = "idFail";
+				url = "/userinfo/idfind";
+			}
+			
+		}else {
+			msg = "failAuthCode";
+			url = "/userinfo/findid";
+			
+		}	
+		rttr.addFlashAttribute("msg", msg);
+			
+		return "redirect:" + url;
+	}
+	
+	
+	// [비밀번호 찾기 페이지]
+	@GetMapping("/pwfind")
+	public void pwfind() {
+		
+	}
+	
+	
+	// [비밀번호 찾기 기능]
+	@PostMapping("/pwfind")
+	public String pwfind(String u_id, String u_name, String u_email, String authcode, HttpSession session, RedirectAttributes rttr) throws Exception {
+		
+		String url = "";
+		String msg = "";
+		
+		
+		if(authcode.equals(session.getAttribute("authcode"))) {
+			
+			//사용자가 입력한 3개정보(아아디, 이름, 이메일)를 조건으로 사용하여, 이메일을 디비에서 가져온다.
+			String d_email = userInfoService.pwfind(u_id, u_name, u_email);
+			if(d_email != null) {
+				
+				//임시비밀번호생성(UUID이용)
+				String tempPw = UUID.randomUUID().toString().replaceAll("-", "");  // - 를 제거
+				tempPw = tempPw.substring(0, 10); //10자리
+			
+				//암호화 된 비밀번호
+				String enc_tempPw = passwordEncoder.encode(tempPw); // 부작위로 뽑은 비밀번호 인코딩
+				userInfoService.tempPwUpdate(u_id, enc_tempPw); //인코딩된 암호 db에 저장
+				
+				//메일발송
+				EmailDTO dto = new EmailDTO("DocMall", "DocMall", d_email, "DocMall에서 입시 비밀번호를 보내드립니다.", tempPw); //변경안내 이메일에 들어갈 내용들
+				
+				emailService.sendMail("emailPwResult", dto, tempPw); // 비밀번호 변경 메일 발송
+				
+				session.removeAttribute("authcode");  //세션 제거
+				
+				url = "/userinfo/login";
+			}else {
+				url = "/userinfo/pwfind";
+				msg = "failInput";				
+			}
+					
+			//비밀번호 임시코드를 생성하여, 암호화해서, 사용자아이디에 저장한다.
+			//그리고, 비밀번호 임시코드를 메일로 발급한다.
+		}else {
+			url = "/userinfo/pwfind";
+			msg = "failAuth";	
+		}
+		
+		return "redirect:" + url;  // 띄어쓰기 주의!! "redirect: " + url   ""사이에 공백 있었더니 페이지를 찾지 못함.
 	}
 	
 	

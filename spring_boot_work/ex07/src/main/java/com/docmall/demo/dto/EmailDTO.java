@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
+@AllArgsConstructor    //롬복에서 제공해줌, 매개변수가 있는 생성자를 만들어줌.
 public class EmailDTO {
 
 	private String senderName; // 발신자 이름

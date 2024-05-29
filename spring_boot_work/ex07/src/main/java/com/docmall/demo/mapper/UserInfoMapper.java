@@ -28,6 +28,13 @@ public interface UserInfoMapper {
 	// [회원탈퇴]
 	void delete(String u_pwd);
 	
+	// [아이디 찾기]
+	String idfind(@Param("u_name") String u_name, @Param("u_email") String u_email);
 	
+	// [비밀번호 찾기]
+	String pwfind(@Param("u_id") String u_id, @Param("u_name") String u_name, @Param("u_email") String u_email);
+	
+	// [비밀번호 업데이트]
+	void tempPwUpdate(@Param("u_id") String u_id, @Param("u_pwd") String u_pwd);
 	
 }

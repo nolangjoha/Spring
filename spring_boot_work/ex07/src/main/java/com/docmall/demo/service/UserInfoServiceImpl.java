@@ -61,9 +61,26 @@ public class UserInfoServiceImpl implements UserInfoService  {
 	// [회원 탈퇴하기]
 	@Override
 	public void delete(String u_id) {
-		userInfoMapper.delete(u_id);
-		
-		
+		userInfoMapper.delete(u_id);		
+	}
+
+	
+	// [아이디 찾기]
+	@Override
+	public String idfind(String u_name, String u_email) {
+		return userInfoMapper.idfind(u_name, u_email);
+	}
+
+	//[비밀번호 찾기]
+	@Override
+	public String pwfind(String u_id, String u_name, String u_email) {
+		return userInfoMapper.pwfind(u_id, u_name, u_email);
+	}
+
+	// [비밀번호 업데이트]
+	@Override
+	public void tempPwUpdate(String u_id, String u_pwd) {
+		userInfoMapper.tempPwUpdate(u_id, u_pwd);
 	}
 
 	

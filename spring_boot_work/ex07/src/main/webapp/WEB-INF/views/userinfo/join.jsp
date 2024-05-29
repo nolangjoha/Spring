@@ -311,7 +311,7 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
             $.ajax({
                 url: '/email/authcode',
                 type:'get',
-                data: {receiverMail : $("#u_email").val()},
+                data: {receiverMail : $("#u_email").val(), type : "emailJoin"},
                 dataType: 'text',
                 success: function(result) {
                   if(result =="success"){

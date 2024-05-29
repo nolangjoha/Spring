@@ -87,4 +87,44 @@
 	</delete>
 
 
+	<!-- 아이디 찾기 -->
+	<select id="idfind" resultType="String">
+	
+		SELECT
+		 	u_id
+		FROM
+			userinfo
+		WHERE
+			u_name = #{u_name}	
+		AND
+			u_email = #{u_email}				
+	</select>
+
+	<!-- 비밀번호 찾기  -->
+	<select id="pwfind" resultType="String">
+	
+			SELECT
+			 	u_email
+			FROM
+				userinfo
+			WHERE
+				u_id = #{u_id}
+			AND
+				u_name = #{u_name}	
+			AND
+				u_email = #{u_email}
+	</select>
+
+
+	<!-- 비밀번호 업데이트 -->
+	<update id="tempPwUpdate"  parameterType="map">
+		UPDATE
+			userinfo
+		SET
+			u_pwd = #{u_pwd}
+		WHERE
+			u_id = #{u_id}
+	</update>
+
+
 </mapper>

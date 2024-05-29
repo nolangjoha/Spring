@@ -56,46 +56,52 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
 
 <!-- Begin page content -->
 <main role="main" class="flex-shrink-0">
-  <div class="container">
-    <h1 class="mt-5">Register</h1>
-    <div class="row">
-      <div class ="col">
+    <div class="container">
+        <h1 class="mt-5">Register</h1>
+        <div class="row">
+              <div class ="col">
 
-        <div class="card card-info">
-          <div class="card-header">
-          <h3 class="card-title">Login Form</h3>
-          </div>
-          
-          <!-- --u_id, u_pwd, u_name, u_email, u_zip_code, u_addr, u_addrdetail, u_phone, u_regdate  -->
-          <!-- U_ID, U_PWD, U_NAME, U_EMAIL, U_ZIP_CODE, U_ADDR, U_ADDRDETAIL, U_PHONE, U_REGDATE -->
-          <!-- id="joinForm" -->
-          <form class="form-horizontal" id="loginForm" action="/userinfo/login" method="post">
-          <div class="card-body">
-              <div class="form-group row">
-                  <label for="u_id" class="col-sm-4 col-form-label">ID</label>
-                  <div class="col-sm-8">
-                  <input type="text" class="form-control" id="u_id" name="u_id" placeholder="아이디" value="user01">
-                  </div>
-              <span for="u_id" class="col-sm-4 col-form-label" id="idCheckMsg" style="color : red"></span>
-              </div>
-              <div class="form-group row">
-                  <label for="u_pwd" class="col-sm-4 col-form-label">PWD</label>
-                  <div class="col-sm-8">
-                  <input type="password" class="form-control" id="u_pwd" name="u_pwd" placeholder="비밀번호" value="1234">
-                  </div>
-              </div>
-          </div>
-          
-          <div class="card-footer text-center">   
-            <button type="submit" class="btn btn-info" id="btnLogin">로그인</button>
-          </div>
-          
-          </form>
+                <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">Login Form</h3>
+                    </div>
+                  
+                    <!-- --u_id, u_pwd, u_name, u_email, u_zip_code, u_addr, u_addrdetail, u_phone, u_regdate  -->
+                    <!-- U_ID, U_PWD, U_NAME, U_EMAIL, U_ZIP_CODE, U_ADDR, U_ADDRDETAIL, U_PHONE, U_REGDATE -->
+                    <!-- id="joinForm" -->
+                    <form class="form-horizontal" id="loginForm" action="/userinfo/login" method="post">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="u_id" class="col-sm-4 col-form-label">ID</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" id="u_id" name="u_id" placeholder="아이디" value="user04">
+                            </div>
+                        <span for="u_id" class="col-sm-4 col-form-label" id="idCheckMsg" style="color : red"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label for="u_pwd" class="col-sm-4 col-form-label">PWD</label>
+                            <div class="col-sm-8">
+                              <input type="password" class="form-control" id="u_pwd" name="u_pwd" placeholder="비밀번호" value="1234">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer text-center">   
+                      <button type="submit" class="btn btn-info btn-block" id="btnLogin">로그인</button>
+                    </div>
+                    
+                    </form>
+                </div>
+
+                <div class="card-footer text-center">
+                  <a href="/userinfo/idfind">아이디 찾기</a>
+                  <a href="/userinfo/pwfind">비밀번호 찾기</a>
+                </div>
+
+
+            </div>
         </div>
-
-      </div>
     </div>
-  </div>
 </main>
 
 <%@include file="/WEB-INF/views/comm/footer.jsp" %>
@@ -113,7 +119,9 @@ https://getbootstrap.com/docs/4.6/assets/img/favicons/manifest.json">
         } else if(msg == "failPW") {
             alert("비밀번호를 정확히 입력해주세요.");
             document.getElementById("u_id").focus();
-        }
+        } else if(msg == "success") {
+            alert("아이디를 메일발송하였습니다.");
+
 
 
 

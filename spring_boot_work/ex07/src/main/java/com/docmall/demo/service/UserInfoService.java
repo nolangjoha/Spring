@@ -2,7 +2,6 @@ package com.docmall.demo.service;
 
 
 
-
 import com.docmall.demo.domain.UserInfoVO;
 
 public interface UserInfoService {
@@ -25,6 +24,14 @@ public interface UserInfoService {
 	// [회원탈퇴]
 	void delete(String u_pwd);
 	
+	// [아이디 찾기]
+		String idfind(String u_name, String u_email);
+		
+	// [비밀번호 찾기]
+	String pwfind(String u_id,String u_name,String u_email);	
+		
+	// [비밀번호 업데이트]
+	void tempPwUpdate(String u_id, String u_pwd);
 	
 	
 }

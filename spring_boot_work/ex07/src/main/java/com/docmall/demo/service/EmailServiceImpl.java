@@ -24,7 +24,7 @@ public class EmailServiceImpl implements EmailService {
 	private final SpringTemplateEngine templateEngine;
 	
 	@Override
-	public void sendMail(EmailDTO dto, String authcode) {
+	public void sendMail(String type, EmailDTO dto, String authcode) {
 		
 		//메일 구성정보 담당 객체(받는사람, 보내는 사람, 받는사람 메일주소, 본문내용)
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -43,7 +43,7 @@ public class EmailServiceImpl implements EmailService {
 			mimeMessageHelper.setTo(dto.getReceiverMail()); // 메일 수진자
 			mimeMessageHelper.setFrom(new InternetAddress(dto.getSenderMail(), dto.getSenderName()));
 			mimeMessageHelper.setSubject(dto.getSubject()); //메일제목
-			mimeMessageHelper.setText(setContext(authcode, "email"), true); //메일본문내용, HTML여부
+			mimeMessageHelper.setText(setContext(authcode, type), true); //메일본문내용, HTML여부
 															//"email"은 email.html파일을 가리킨다.
 			//메일발송 기능s
 			mailSender.send(mimeMessage);		
@@ -52,13 +52,10 @@ public class EmailServiceImpl implements EmailService {
 		}
 		
 	}
-	
-	
 
 	//인증번호 및 임시 비밀번호 생성 메서드
 	//public String createCode() {}
-	
-	
+		
 	//thymeleaf를 통한 html적용
 	//String code: 인증코드 String type : email.html
 	public String setContext(String authcode, String type) {

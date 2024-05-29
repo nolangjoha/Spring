@@ -28,7 +28,7 @@ public class EmailController {
 	
 	//[1. 인증코드 발송]
 	@GetMapping("/authcode")
-	public ResponseEntity<String> authcode(EmailDTO dto, HttpSession session){
+	public ResponseEntity<String> authcode(String type, EmailDTO dto, HttpSession session){
 
 		log.info("dto : " + dto);
 		
@@ -47,7 +47,19 @@ public class EmailController {
 		
 		//사용자에게 메일발송(예외발생할 수 있으니까 try catch)
 		try {
-			emailService.sendMail(dto, authcode);
+			
+			//메일발송
+			//메일제목작업
+			if(type.equals("emailJoin")) {
+				dto.setSubject("DocMall 회원가입 인증코드 입니다.");
+			}else if(type.equals("emailID")) {
+				dto.setSubject("DocMall 아이디 찾기 인증코드 입니다.");
+			}else if(type.equals("emailPw")) {
+				dto.setSubject("DocMall 비밀번호 찾기 인증코드 입니다.");
+			}
+			
+			
+			emailService.sendMail(type, dto, authcode);
 			entity = new ResponseEntity<String>("success", HttpStatus.OK); //200코드
 		}catch(Exception e) {
 			e.printStackTrace();

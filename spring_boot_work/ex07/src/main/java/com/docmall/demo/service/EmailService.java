@@ -4,6 +4,6 @@ import com.docmall.demo.dto.EmailDTO;
 
 public interface EmailService {
 
-	void sendMail(EmailDTO dto, String message);
+	void sendMail(String type, EmailDTO dto, String message);
 	
 }
