@@ -29,6 +29,14 @@
 	        <li class="nav-item">
 	          <a class="nav-link" href="/userinfo/logout">Logout</a>
 	        </li>   
+	        
+	        <!-- 인터셉트 ajax요청 확인용 -->
+	        <li class="nav-item">
+	          <a class="nav-link" id="btnAjax" href="#">Ajax</a>
+	        </li>   	      
+	        
+	        
+	          
 	     </c:if>                
         <li class="nav-item">
           <a class="nav-link disabled">Disabled</a>
@@ -41,3 +49,35 @@
     </div>
   </nav>
 </header>
+
+<script>
+  $(document).ready(function(){
+
+    // https://milenote.tistory.com/46 (참고)
+    $("#btnAjax").on("click", function(e){
+      e.preventDefault();  // <a>태그의 링크기능을 제거하는 기능
+      
+        $.ajax({
+                url: '/userinfo/ajax',   
+                type: 'get',
+                dataType: 'text',  
+                beforeSend : function(xhr) {  //XMLHttpRequest객체가 브라우저 내장. 
+                  xhr.setRequestHeader("AJAX","true");  // (이름, 값) //이름은 임의적으로 지정
+                },
+                success: function(result) { 
+                
+                },
+                error : function(xhr, status, error){
+                  alert(status);
+                  alert("로그인 페이지로 이동합니다.");
+                  location.href = "/userinfo/login";
+                }
+            });
+    });
+
+  });
+
+</script>
+
+
+

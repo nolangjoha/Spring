@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.docmall.demo.domain.UserInfoVO;
@@ -48,7 +49,9 @@ public class UserInfoController {
 		log.info("called joinForm..");
 	}
 	 
+	
 	// [아이디 중복체크]
+	//ajax요청작업은 리턴타입이 ResponseEntity 사용해야한다. 그리고 @responseBody어노테이션을 사용할 필요가 없다.
 	@GetMapping("/idCheck")
 	public ResponseEntity<String> idCheck(String u_id) throws Exception {
 		
@@ -105,9 +108,9 @@ public class UserInfoController {
 		if(vo != null) {  // 아이디가 존재한다면 (비밀번호도 존재한다 --> 비밀번호 비교작업)
 			//비밀번호 비교 - u_id : 사용자가 입력한 비밀번호, vo.getU_pwd() : DB에 암호화된 비번
 			if(passwordEncoder.matches(u_pwd, vo.getU_pwd())) {  // 사용자가 입력한 비번이 암호화된 형태에 해당하는 것이라면?
-				session.setAttribute("login_status", vo); 
+				session.setAttribute("login_status", vo); //.setAttribute(String name, Object value)
 				
-				// 원래 요청한 주소가 세션으로 존재하면
+				// 원래 요청한 주소가 세션으로 존재하면   / LoginInterceptor.java파일 참조
 				if(session.getAttribute("targetUrl") != null) {
 					url = (String) session.getAttribute("targetUrl");
 					}
@@ -160,6 +163,7 @@ public class UserInfoController {
 	@GetMapping("/mypage")
 	public void mypage(HttpSession session, Model model) throws Exception {
 		
+		// getAttribute(String name) object -> UserInfoVO
 		String u_id = ((UserInfoVO) session.getAttribute("login_status")).getU_id();
 		
 		UserInfoVO vo = userInfoService.login(u_id);
@@ -367,7 +371,14 @@ public class UserInfoController {
 	}
 	
 	
-	
+	// [연습용] 인터셉터 사용 중에 일반요청 ajax요청 구분하기
+	//  /userinfo/ajax    인증된 사용자만 사용할수있게 설정해보겠다.
+	@GetMapping("/ajax") 
+	@ResponseBody
+	public String ajax() {
+		log.info("called ajax....");
+		return "ajax";
+	}
 	
 	
 	
