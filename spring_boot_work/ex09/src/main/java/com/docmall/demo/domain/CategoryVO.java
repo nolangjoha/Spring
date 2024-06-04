@@ -12,7 +12,7 @@ public class CategoryVO {
 	
 	private Integer c_code;
 	private String c_name;
-	private int c_pcod;
+	private int c_pcode;
 	
 	
 }

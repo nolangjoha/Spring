@@ -30,7 +30,9 @@ public class CategoryController {
 		List<CategoryVO> categoryAllList = categoryService.categoryAllList();
 		model.addAttribute("catelist",categoryAllList);
 		*/
-		model.addAttribute("catelist",categoryService.categoryAllList());  //위의 두줄을 한줄로 할 수도 있다.
+		
+		//GlobalControllerAdvice.java 에서 1차 카테고리  model작업으로 필요가 없음.
+		//model.addAttribute("catelist",categoryService.categoryAllList());  //위의 두줄을 한줄로 할 수도 있다.
 	}
 	
 	
