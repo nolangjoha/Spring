@@ -45,12 +45,7 @@ public interface UserInfoMapper {
 	//[회원리스트] _ 출력만
 	List<UserInfoVO> memList();
 	
-	//[회원리스트] _ 페이지 및 검색조건 추가
-	List<UserInfoVO> memListWithPaging(Criteria cri);
-	
-	//회원 검색조건
-	//검색조건이 추가된 총 데이터 개수
-	int getTotalCount(Criteria cri);
+
 	
 	
 }

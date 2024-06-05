@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- 기본문법 -->
+<!--<link rel="stylesheet" href="/style.css">-->
+<!-- 타임리프문법 -->
+<link rel="stylesheet" th:href="@{/style.css}"> <!-- 프로젝트가 바뀌는 컨텍스 패스가 바뀔경우를 대비하여 타임리프 문법을 사용 -->
+</head>
+<body>
+	
+	<h3>List객체 데이터 출력시 if조건문 사용하기</h3>
+	<table>
+		<tr>
+			<th>번호</th>
+			<th>이름</th>
+			<th>나이</th>
+			<th>구분1</th>			
+			<th>구분2</th>	
+		</tr>
+		<tr th:each="user, status : ${list}">
+			<td th:text="${status.count}"></td>
+			<td th:text="${user.username}"></td>
+			<td th:text="${user.age}"></td>
+			<td th:text="${user.age >= 18 ? '성년' : '미성년'}"></td>
+			<td>
+				<span th:text="성년" th:if="${user.age ge 18}"></span>		<!--  if 만약 조건에 해당한다면 -->
+				<span th:text="미성년" th:unless="${user.age ge 18}"></span>	<!-- unless 만약 조건에 해당하지 않는다면 -->		 
+				<!--  조건은 같게 작성해야 한다. -->
+			</td>
+		</tr>
+	</table>
+
+</body>
+</html>

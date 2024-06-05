@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- 기본문법 -->
+<!--<link rel="stylesheet" href="/style.css">-->
+<!-- 타임리프문법 -->
+<link rel="stylesheet" th:href="@{/style.css}"> <!-- 프로젝트가 바뀌는 컨텍스 패스가 바뀔경우를 대비하여 타임리프 문법을 사용 -->
+</head>
+<body>
+	
+	<h3>List객체 데이터 출력</h3>
+	<table>
+		<tr>
+			<th>번호</th>
+			<th>이름</th>
+			<th>나이</th>
+		</tr>
+		<tr th:each="user, status : ${list}">
+			<td th:text="${status.count}"></td>
+			<td th:text="${user.username}"></td>
+			<td th:text="${user.age}"></td>
+		</tr>
+	</table>
+	
+	<hr>
+	
+	<h3>List 객체의 요소 접근하여 출력</h3>
+	<table>
+		<tr>
+			<th>요소</th>
+			<th>이름</th>
+			<th>나이</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td th:text="${list[0].username}"></td>
+			<td th:text="${list[0].age}"></td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td th:text="${list[1].username}"></td>
+			<td th:text="${list[1].age}"></td>
+		</tr>		
+	</table>
+	
+	<hr>
+	
+	<h3>상태변수 사용출력</h3>
+	<table>
+		<tr th:each="user, userState : ${list}">
+			<th>
+				index = <br>
+				count = <br>
+				size = <br>
+				even? = <br>
+				odd? = <br> 
+				first? = <br> 
+				last? = <br> 
+				current = <br>
+			</th>
+			<td>
+				<span th:text="${userState.index}"></span> <br>
+				<span th:text="${userState.count}"></span> <br>
+				<span th:text="${userState.size}"></span> <br>
+				<span th:text="${userState.even}"></span> <br>
+				<span th:text="${userState.odd}"></span> <br>
+				<span th:text="${userState.first}"></span> <br>
+				<span th:text="${userState.last}"></span> <br>
+				<span th:text="${userState.current}"></span> <br>
+			</td>
+		</tr>
+	</table>
+	
+	
+	
+</body>
+</html>

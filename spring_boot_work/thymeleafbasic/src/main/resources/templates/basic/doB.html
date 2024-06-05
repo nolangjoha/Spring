@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+		<h1>SpringEL 표현식</h1>
+		<h3>User 객체를 데이터 출력</h3>
+		<ul>
+			<li>이름 : <span th:text="${user.username}"></span></li> <!-- getter이 작동 -->
+			<li>나이 : <span th:text="${user.age}"></span></li> 
+		</ul>
+</body>
+</html>

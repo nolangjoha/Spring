@@ -93,18 +93,6 @@ public class UserInfoServiceImpl implements UserInfoService  {
 		return userInfoMapper.memList();
 	}
 
-	//[회원리스트] _ 검색조건 및 페이징 
-	@Override
-	public List<UserInfoVO> memListWithPaging(Criteria cri) {
-		// TODO Auto-generated method stub
-		return userInfoMapper.memListWithPaging(cri);
-	}
-
-	@Override
-	public int getTotalCount(Criteria cri) {
-		// TODO Auto-generated method stub
-		return userInfoMapper.getTotalCount(cri);
-	}
 
 	
 	

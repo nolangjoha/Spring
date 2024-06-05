@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+<h2>리터럴(Literal)</h2>
+<ul>
+	<li>'hello' + 'world!' = <span th:text="'hello' + 'world!'"></span></li>
+	<li>'hello world!' = <span th:text="'hello world'"></span></li>
+	<li>'hello' + ${data} = <span th:text="'hello' + ${data}"></span></li>
+	<!-- 마지막 작업이 가장 편리함. 실제 작업 할 때 아래 코드를 사용해 작업을 많이 함.  -->
+	<li>리터럴 대체 |hello ${data}| = <span th:text="|hello ${data}|"></span></li>
+</ul>
+
+
+</body>
+</html>

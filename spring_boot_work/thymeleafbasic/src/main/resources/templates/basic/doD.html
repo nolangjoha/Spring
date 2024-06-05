@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<h3>map데이터 출력</h3>
+
+<ul>
+	<li>UserA 이름 : <span th:text="${userMap['userA'].username}"></span></li>
+	<li>UserA 나이 : <span th:text="${userMap['userA'].age}"></span></li>
+</ul>
+
+<hr>
+
+<ul>
+	<li>UserB 이름 : <span th:text="${userMap['userB'].username}"></span></li>
+	<li>UserB 나이 : <span th:text="${userMap['userB'].age}"></span></li>
+</ul>
+
+<hr>
+
+<ul>
+	<li th:each="entry : ${userMap}">
+		<span th:text="${entry.key}"></span>   <!-- toString 메서드 호출 -->
+		<span th:text="${entry.value}"></span>
+		<span th:text="${entry.value.username}"></span>
+		<span th:text="${entry.value.age}"></span>
+	</li>
+</ul>
+
+
+</body>
+</html>

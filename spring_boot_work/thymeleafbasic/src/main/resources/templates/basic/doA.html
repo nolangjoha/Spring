@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1> text vs utext</h1>
+	<ul>
+		<!-- 1) Escape 처리가 되어 태그효과 적용 안됨.  '<' 가 &lt;, '>'가 &gt;로 변함.   -->
+		<li> th: text = <span th:text="${data}">홍길동</span></li>
+		
+		<!-- 2) UnEscape 상태로 태그효과 적용 -->
+		<li> th: text = <span th:utext="${data}"></span></li>
+	</ul>
+	
+	<!-- 3)th:inline="none"  <span>태그의 내용을 문법해석을 안하게 함. -->
+	<h1><span th:inline="none">[[...]] vs [(...)]</span></h1>
+	<ul>
+		<li><span th:inline="none">[[...]] = </span>[[${data}]]</li>
+		<li><span th:inline="none">[(...)] = </span>[(${data})]</li>
+	</ul>
+</body>
+</html>

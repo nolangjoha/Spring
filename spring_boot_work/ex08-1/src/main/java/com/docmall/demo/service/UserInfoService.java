@@ -38,12 +38,6 @@ public interface UserInfoService {
 	
 	//[회원리스트]
 	List<UserInfoVO> memList();
-	
-	//[회원리스트] _ 페이지 및 검색조건 추가
-	List<UserInfoVO> memListWithPaging(Criteria cri);
-	
-	//총 데이터 개수
-	int getTotalCount(Criteria cri);
-	
+
 	
 }

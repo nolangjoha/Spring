@@ -382,39 +382,15 @@ public class UserInfoController {
 	}
 	
 	
-	/*
+	
 	//[회원리스트]
 	@GetMapping("/memberlist")
 	public void memberlist(Model model) {
 	model.addAttribute("memlist",userInfoService.memList()); 
 	}
-	*/
 	
-	//[회원리스트] _ 페이징
-	@GetMapping("/memberlist")
-	public void list(Criteria cri, Model model) {
-		//데이터소스(list)를 jsp에서 사용할 경우에는 파라미터를 Model을 사용한다.
-		
-		// list에 10개씩 데이터가 들어와 있다.
-		List<UserInfoVO> memListWithPaging = userInfoService.memListWithPaging(cri);
-		//cir를 넣은 이유 mapper.xml까지 정보를 보내주기 위해
-		
-		log.info("게시물 목록 데이터:" + memListWithPaging);
-		
-		//1)목록으로 뿌릴 데이터 10건 (model 1)
-		model.addAttribute("memlist", memListWithPaging);  
-						// "list"(jsp명)와 list는 꼭 같은 이름이 아니여도 된다.
-						//"list"를  list.jsp에 가서 이엘문법으로 list에 있는 걸 끌어와 사용한다.
-		
-		int total = userInfoService.getTotalCount(cri);
-		PageDTO pageDTO = new PageDTO(cri, total);
-		
-		log.info("페이징 기능데이터:" + pageDTO);
-		
-		//2) 페이징 기능 1  2  3  ...[next] (model 2)
-		model.addAttribute("pageMaker", pageDTO);
-		//페이징 기능을 만들기위한 것이 pageDTO에서 들어있고 "pageMaker"이름으로 jsp에서 사용한다. 
-	}
+	
+
 	
 	
 	
