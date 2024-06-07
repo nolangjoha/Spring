@@ -29,6 +29,14 @@
 				<span th:text="미성년" th:unless="${user.age ge 18}"></span>	<!-- unless 만약 조건에 해당하지 않는다면 -->		 
 				<!--  조건은 같게 작성해야 한다. -->
 			</td>
+			<!-- switch는 다중if문과 성격이 같다. -->
+			<td th:switch="${user.age}">
+				<span th:case="10">10살</span>
+				<span th:case="20">20살</span>
+				<span th:case="*">기타</span>
+			
+			</td>
+			
 		</tr>
 	</table>
 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<h2>타임리프 내장객체</h2>
+
+<ul>
+	<li>request = <span th:text="${request}"></span></li>
+	<!-- 	<li>request = <span th:text="${request.메서드()}"></span></li>  // 이런식으로 사용. 메서드 자리에 속성을 넣기도 함.-->
+	<li>response = <span th:text="${response}"></span></li>
+	<li>servletContext = <span th:text="${servletContext}"></span></li>
+	<li>locale = <span th:text="${#locale}"></span></li>	 
+</ul>
+
+
+</body>
+</html>

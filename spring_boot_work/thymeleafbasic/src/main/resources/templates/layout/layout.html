@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!-- 상속 -->
+<th:block th:replace="~{/layout/fragments/config :: configInfo}"></th:block>
+<body>
+<!-- 상속 -->
+<th:block th:replace="~{/layout/fragments/header :: headerLayout}"></th:block>	
+
+<!-- 아래 코드는 항상 바뀌는 내용 -->
+<!-- 재정의 -->
+<th:block layout:fragment="content"></th:block>
+
+<!-- 상속 -->
+<th:block th:replace="~{/layout/fragments/footer :: footerLayout}"></th:block>	
+</body>
+</html>
