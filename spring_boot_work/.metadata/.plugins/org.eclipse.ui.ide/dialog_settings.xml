@@ -71,6 +71,7 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Dev\spring_work\spring_boot_work\thymeleaflayout"/>
 			<item value="C:\Dev\spring_work\spring_boot_work\ex07_1"/>
 			<item value="C:\Dev\spring_work\spring_boot_work\ex07 (1)"/>
 			<item value="C:\Users\i7C-06\Desktop\ex07 (1)"/>

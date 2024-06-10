@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.docmall.demo.mapper.UserInfoMapper">
+	<!-- [아이디 중복체크] -->
+	<select id="idCheck" parameterType="String" resultType="String">	
+		SELECT 
+			u_id 
+		FROM 
+			userinfo 
+		WHERE 
+			u_id = #{u_id} 
+	</select>
+
+	<!-- [회원가입저장] -->
+	<insert id="join" parameterType="com.docmall.demo.domain.UserInfoVO">
+		INSERT INTO 
+			userinfo(
+		        u_id, 
+		        u_pwd, 
+		        u_name, 
+		        u_email, 
+		        u_zip_code, 
+		        u_addr, 
+		        u_addrdetail, 
+		        u_phone)
+		VALUES(
+		        #{u_id}, 
+		        #{u_pwd}, 
+		        #{u_name}, 
+		        #{u_email}, 
+		        #{u_zip_code}, 
+		        #{u_addr}, 
+		        #{u_addrdetail}, 
+		        #{u_phone})
+	</insert>
+
+	<!-- 로그인작업 : 아이디가져오기  -->
+	<select id="login" resultType="com.docmall.demo.domain.UserInfoVO" parameterType="String">
+	SELECT 
+		u_id, 
+        u_pwd, 
+        u_name, 
+        u_email, 
+        u_zip_code, 
+        u_addr, 
+        u_addrdetail, 
+        u_phone,
+        u_regdate
+	FROM 
+	    userinfo
+	WHERE 
+		u_id = #{u_id}
+		
+	</select>
+
+	<!-- 마이페이지 수정하기  -->
+	<update id="modify" parameterType="com.docmall.demo.domain.UserInfoVO">
+		UPDATE
+		    userinfo
+		SET
+		    u_email = #{u_email}, 
+		    u_zip_code = #{u_zip_code}, 
+		    u_addr = #{u_addr}, 
+		    u_addrdetail = #{u_addrdetail}, 
+		    u_phone = #{u_phone}    
+		WHERE   
+		    u_id = #{u_id} 		
+	</update>
+
+	<!-- 비밀번호 변경 -->
+	<!-- 파라미터가 2개면 매퍼클래스에서 파람작업을 해주고 마이보티스에서 파라미터 타입은 map이다. -->
+	<update id="changePw" parameterType="map">
+		UPDATE
+		    userinfo
+		SET
+		    u_pwd = #{new_pwd}   
+		WHERE   
+		    u_id = #{u_id}
+	</update>
+
+	<!-- 회원탈퇴 기능 -->
+	<delete id="delete" parameterType="map">
+		DELETE FROM
+			userinfo
+		WHERE
+		 	u_id = #{u_id}
+	</delete>
+
+
+	<!-- 아이디 찾기 -->
+	<select id="idfind" resultType="String">
+	
+		SELECT
+		 	u_id
+		FROM
+			userinfo
+		WHERE
+			u_name = #{u_name}	
+		AND
+			u_email = #{u_email}				
+	</select>
+
+	<!-- 비밀번호 찾기  -->
+	<select id="pwfind" resultType="String">
+	
+			SELECT
+			 	u_email
+			FROM
+				userinfo
+			WHERE
+				u_id = #{u_id}
+			AND
+				u_name = #{u_name}	
+			AND
+				u_email = #{u_email}
+	</select>
+
+
+	<!-- 비밀번호 업데이트 -->
+	<update id="tempPwUpdate"  parameterType="map">
+		UPDATE
+			userinfo
+		SET
+			u_pwd = #{u_pwd}
+		WHERE
+			u_id = #{u_id}
+	</update>
+
+	<!-- 회원리스트 출력만-->
+	<select id="memList" resultType="com.docmall.demo.domain.UserInfoVO" parameterType="com.docmall.demo.dto.Criteria">
+		SELECT
+		    u_id, u_name, u_email, u_zip_code, u_addr, u_addrdetail, u_phone, u_regdate
+		FROM (
+		    SELECT /*+ INDEX_DESC(userinfo PK_USERINFO) */
+		        ROWNUM AS rn,
+		        u_id, u_name, u_email, u_zip_code, u_addr, u_addrdetail, u_phone, u_regdate
+		    FROM
+		        userinfo
+			)
+		ORDER BY rn DESC
+	</select>
+
+
+	<!-- 회원리스트 공통사항 추가-->
+	<select id="memListWithPaging" resultType="com.docmall.demo.domain.UserInfoVO" parameterType="com.docmall.demo.dto.Criteria">
+		SELECT
+		    u_id, u_name, u_email, u_zip_code, u_addr, u_addrdetail, u_phone, u_regdate
+		FROM (
+		    SELECT /*+ INDEX_DESC(userinfo PK_USERINFO) */
+		        ROWNUM AS rn,
+		        u_id, u_name, u_email, u_zip_code, u_addr, u_addrdetail, u_phone, u_regdate
+		    FROM
+		        userinfo
+	    	<include refid="criteria"></include>
+	    <![CDATA[
+	    	ROWNUM <= (#{pageNum} * #{amount}) 
+	    ]]>
+	    	)
+		WHERE 
+			RN > (#{pageNum} - 1) * #{amount} 
+	</select>
+
+	<!-- 공통사항: 검색조건 추가 -->
+	<select id="getTotalCount" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			userinfo
+		WHERE
+			<include refid="criteria"></include> <!-- 사용자가 검색을 사용하지 않으면 값이 넘어오지 않아 이 구문 자체가 생성되지 않는다. 그럼 where절까지만 작성디고 끊기는데 그럼 에러 발생함. -->
+	    	bno > 0 	<!-- bno > 0을 쓰면 위 구문이 생성되지 않아도 에러가 발생하지 않는다. -->
+	    	
+			
+	</select>
+
+</mapper>
